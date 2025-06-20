@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -14,7 +15,7 @@ public class GestorJuegos {
 
         switch(opcion) {
             case 1:
-                System.out.println("Indica el nombre del juego que quieres añadir al catálogo:\n");
+                System.out.println("Indica el nombre del juego que quieres añadir al catálogo:");
                 String nombre = sc.nextLine();
                 if (!juegoExiste(nombre, catalogoJuegos)) {
                     System.out.println("¿Cuál es el género del juego?");
@@ -28,7 +29,7 @@ public class GestorJuegos {
                                     "2. PEGI-7\n" +
                                     "3. PEGI-12\n" +
                                     "4. PEGI-16\n" +
-                                    "5. PEGI-18\n");
+                                    "5. PEGI-18");
                             int opcionPegi = sc.nextInt();
                             sc.nextLine();
                             switch (opcionPegi) {
@@ -62,31 +63,174 @@ public class GestorJuegos {
                     }
                     Juego juego = new Juego (nombre, genero, pegi);
                     activador = true;
+                    ArrayList<Integer> numerosEdiciones = new ArrayList<>();
+                    // Bucle que solicita al usuario los sistemas en los que está disponible el juego.
+                    // El usuario puede introducir múltiples opciones separadas por guiones (por ejemplo, "1-3-4").
+                    // Del string obtenido del input del usuario se crea una lista de los números separados por un guion.
+                    // Se convierte cada elemento de la lista a integer y se valida que esté dentro de las opciones válidas (1 a 4).
+                    // Si todo es correcto se almacena en la lista numerosEdiciones para gestionar cada una de las ediciones más adelante.
+                    // Si hay algún error (número no válido o formato incorrecto), se lanza una excepción y se vuelve a pedir el input al usuario.
                     do {
                         try {
+                            numerosEdiciones.clear();
                             System.out.println("¿Para qué sistemas está disponible? (Puedes elegir más de uno separando las opciones con guiones)\n" +
                                     "1. XBOX\n" +
                                     "2. Nintendo\n" +
                                     "3. Play Station\n" +
-                                    "4. PC\n");
+                                    "4. PC");
                             String ediciones = sc.nextLine();
                             String[] stringsEdiciones = ediciones.split("-");
-                            int[] numerosEdiciones = new int[ediciones.length()];
                             for (int i = 0; i < stringsEdiciones.length; i++) {
                                 int numero = Integer.parseInt(stringsEdiciones[i]);
-                                numerosEdiciones[i] = numero;
+                                numerosEdiciones.add(numero);
                             }
-//                            int[] opcionesValidas = {1, 2, 3, 4};
-//                            for (int numero : numerosEdiciones) {
-//                                for (int opcionValida : opcionesValidas) {
-//                                    if numero
-//                                }
-//                            } Estamos intentando asegurarnos que los números introducidos están entre el 1 y el 4.
+                            Integer[] opcionesValidas = {1, 2, 3, 4};
+                            for (int numero : numerosEdiciones) {
+                                boolean numeroEnLista = Arrays.asList(opcionesValidas).contains(numero);
+                                if (!numeroEnLista) {
+                                    throw new IllegalArgumentException();
+                                }
+                            }
+                            activador = false;
                         } catch (NumberFormatException e) {
                             System.out.println("Opción no válida, por favor, elige una opción u opciones de las disponibles. Recuerda separarlas con guiones si son mas de una.\n");
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Alguna de las opciones no es válida, por favor, elige una o varias opciones de las disponibles.");
                         }
                     } while (activador);
-
+                    // Una vez tenemos los sistemas para los que está disponible el juego entramos en cada opción
+                    // según el input del usuario para poder poner precio específico y stock disponible según sistema.
+                    for (int numero: numerosEdiciones) {
+                        if (numero == 1) {
+                            String consola = "XBOX";
+                            activador = true;
+                            double precio = 0f;
+                            do {
+                                try {
+                                    System.out.println("¿Qué precio tiene el juego '" + nombre + "' en Xbox?");
+                                    precio = sc.nextDouble();
+                                    sc.nextLine();
+                                    activador = false;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Importe no válido, por favor, ingresa un importe válido.");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            activador = false;
+                            int stock = 0;
+                            do {
+                                try {
+                                    System.out.println("¿Cuantás unidades del juego '" + nombre + "' en Xbox quieres añadir al stock?");
+                                    stock = sc.nextInt();
+                                    sc.nextLine();
+                                    activador = false;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
+                            juego.anadirEdicion(consola, edicionJuego);
+                        }
+                        if (numero == 2) {
+                            String consola = "Nintendo";
+                            activador = true;
+                            double precio = 0f;
+                            do {
+                                try {
+                                    System.out.println("¿Qué precio tiene el juego '" + nombre + "' en Nintendo?");
+                                    precio = sc.nextDouble();
+                                    sc.nextLine();
+                                    activador = false;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Importe no válido, por favor, ingresa un importe válido.");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            activador = false;
+                            int stock = 0;
+                            do {
+                                try {
+                                    System.out.println("¿Cuantás unidades del juego '" + nombre + "' en Nintendo quieres añadir al stock?");
+                                    stock = sc.nextInt();
+                                    sc.nextLine();
+                                    activador = false;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
+                            juego.anadirEdicion(consola, edicionJuego);
+                        }
+                        if (numero == 3) {
+                            String consola = "Play Station";
+                            activador = true;
+                            double precio = 0f;
+                            do {
+                                try {
+                                    System.out.println("¿Qué precio tiene el juego '" + nombre + "' en Play Station?");
+                                    precio = sc.nextDouble();
+                                    sc.nextLine();
+                                    activador = false;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Importe no válido, por favor, ingresa un importe válido.");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            activador = false;
+                            int stock = 0;
+                            do {
+                                try {
+                                    System.out.println("¿Cuantás unidades del juego '" + nombre + "' en Play Station quieres añadir al stock?");
+                                    stock = sc.nextInt();
+                                    sc.nextLine();
+                                    activador = false;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
+                            juego.anadirEdicion(consola, edicionJuego);
+                        }
+                        if (numero == 4) {
+                            String consola = "PC";
+                            activador = true;
+                            double precio = 0f;
+                            do {
+                                try {
+                                    System.out.println("¿Qué precio tiene el juego '" + nombre + "' en PC?");
+                                    precio = sc.nextDouble();
+                                    sc.nextLine();
+                                    activador = false;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Importe no válido, por favor, ingresa un importe válido.");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            activador = false;
+                            int stock = 0;
+                            do {
+                                try {
+                                    System.out.println("¿Cuantás unidades del juego '" + nombre + "' en PC quieres añadir al stock?");
+                                    stock = sc.nextInt();
+                                    sc.nextLine();
+                                    activador = false;
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
+                            juego.anadirEdicion(consola, edicionJuego);
+                        }
+                    }
+                    catalogoJuegos.add(juego);
+                    System.out.println("Juego '" + juego.getNombre() + "' (" + juego.getGenero() + ", " + juego.getPegi() + ") añadido en catálogo para las siguientes consolas:");
+                    for (String consola : juego.getConsolas()) {
+                        System.out.println(consola + " - " + String.format("%.2f", juego.getPrecio(consola)) + "€ - " + (juego.getStock(consola)) + "ud.");
+                    }
                 } else {
                     System.out.println("El juego " + nombre + " ya existe en la base de datos.");
                 }
