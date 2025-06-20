@@ -2,7 +2,6 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class GestorTiendaJuegos {
@@ -14,6 +13,7 @@ public class GestorTiendaJuegos {
         Scanner sc = new Scanner(System.in);
         int opcion = 0;
         ArrayList<Cliente> listaClientes = new ArrayList<>();
+        ArrayList<Juego> catalogoJuegos = new ArrayList<>();
 
         do {
             try {
@@ -29,7 +29,7 @@ public class GestorTiendaJuegos {
                                 System.out.println(GestorClientes.menuClientes());
                                 opcionCliente = sc.nextInt();
                                 sc.nextLine();
-                                GestorClientes.switchCliente(opcionCliente, listaClientes);
+                                GestorClientes.switchClientes(opcionCliente, listaClientes);
                             } catch (InputMismatchException e) {
                                 System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
                                 sc.nextLine();
@@ -37,7 +37,17 @@ public class GestorTiendaJuegos {
                         } while (opcionCliente != 7);
                         break;
                     case 2:
-                        System.out.println("Opción 2\n");
+                        do {
+                            try {
+                                System.out.println(GestorJuegos.menuJuegos());
+                                opcionCliente = sc.nextInt();
+                                sc.nextLine();
+                                GestorJuegos.switchJuegos(opcionCliente, catalogoJuegos);
+                            } catch (InputMismatchException e) {
+                                System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                sc.nextLine();
+                            }
+                        } while (opcionCliente != 7);
                         break;
                     case 3:
                         System.out.println("Opción 3\n");

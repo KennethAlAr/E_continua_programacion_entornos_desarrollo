@@ -6,11 +6,11 @@ import java.util.Scanner;
 public class GestorClientes {
 
     /**
-     * Función para manejar las opciones del menú de Gestión de Clientes
-     * @param opcion Opción escogida para el menú
+     * Función para manejar las opciones del menú de Gestión de Clientes.
+     * @param opcion Opción escogida para el menú.
      * @param listaClientes Lista de los clientes para poder gestionarlos.
      */
-    public static void switchCliente(int opcion, ArrayList<Cliente> listaClientes) {
+    public static void switchClientes(int opcion, ArrayList<Cliente> listaClientes) {
         Scanner sc = new Scanner(System.in);
         String dni;
 
