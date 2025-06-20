@@ -186,7 +186,7 @@ public class GestorTiendaJuegos {
                 System.out.println(buscarPorDni(dni, listaClientes));
                 break;
             case 5:
-                listarAlfabetico(listaClientes);
+                System.out.println(listarAlfabetico(listaClientes));
                 break;
             case 6:
                 listarPorVentas(listaClientes);
@@ -247,7 +247,7 @@ public class GestorTiendaJuegos {
                             "\nDNI: " + c.getDni() +
                             "\nTeléfono: " + c.getTelefono() +
                             "\nCorreo electrónico: " + c.getEmail() +
-                            "\nImporte total de ventas: " + String.format("%.2f", c.getImporteVentas()));
+                            "\nImporte total de ventas: " + String.format("%.2f", c.getImporteVentas())+ "€.");
                     return cliente;
                 }
             }
@@ -259,8 +259,8 @@ public class GestorTiendaJuegos {
      * Función que imprime la lista de clientes con sus datos en orden alfabético.
      * @param listaClientes Lista de los clientes que se quiere ordenar y listar.
      */
-    public static void listarAlfabetico(ArrayList<Cliente> listaClientes) {
-        System.out.println("Listado de clientes (Orden alfabético)");
+    public static String listarAlfabetico(ArrayList<Cliente> listaClientes) {
+        String mensaje = "Listado de clientes (Orden alfabético)\n";
         ArrayList<String> nombresID = new ArrayList<>();
         for (Cliente c : listaClientes) {
             nombresID.add(c.getNombre().toLowerCase() + "::" + c.getDni());
@@ -269,20 +269,20 @@ public class GestorTiendaJuegos {
         for (String nombre : nombresID) {
             for (Cliente c : listaClientes) {
                 if ((c.getNombre().toLowerCase() + "::"+ c.getDni()).equals(nombre)) {
-                    System.out.println(c.getNombre() + ", DNI: " + c.getDni() + ", teléfono: " + c.getTelefono()
-                            + ", correo electrónico: " + c.getEmail() + ", valor en ventas: " + String.format("%.2f", c.getImporteVentas()) + "€.");
+                    mensaje += c.getNombre() + ", DNI: " + c.getDni() + ", teléfono: " + c.getTelefono()
+                            + ", correo electrónico: " + c.getEmail() + ", valor en ventas: " + String.format("%.2f", c.getImporteVentas()) + "€.\n";
                 }
             }
         }
-        System.out.println();
+        return mensaje;
     }
 
     /**
-     * Función que ordena e imprime la lista de clientes según el importe de las ventas realizadas a dicho cliente.
+     * Función que ordena e imprime la lista de clientes según el importe de las ventas realizadas a dicho cliente (orden ascendente).
      * @param listaClientes Lista de los clientes que se quiere ordenar y listar.
      */
-    public static void listarPorVentas(ArrayList<Cliente> listaClientes) {
-        System.out.println("Listado de clientes (Orden por importe de ventas)");
+    public static String listarPorVentas(ArrayList<Cliente> listaClientes) {
+        String mensaje = "Listado de clientes (Orden por importe de ventas)\n";
         for (int i = 0; i < listaClientes.size() - 1; i++) {
             for (int j = i + 1; j < listaClientes.size(); j++) {
                 if (listaClientes.get(i).getImporteVentas() > listaClientes.get(j).getImporteVentas()) {
@@ -293,10 +293,10 @@ public class GestorTiendaJuegos {
             }
         }
         for (Cliente c : listaClientes) {
-            System.out.println(String.format("%.2f", c.getImporteVentas()) + "€, " + c.getNombre() +
-                    ", DNI: " + c.getDni() + ", teléfono: " + c.getTelefono() + ", correo electrónico: " + c.getEmail() + ".");
+            mensaje += String.format("%.2f", c.getImporteVentas()) + "€, " + c.getNombre() +
+                    ", DNI: " + c.getDni() + ", teléfono: " + c.getTelefono() + ", correo electrónico: " + c.getEmail() + ".\n";
         }
-        System.out.println();
+        return mensaje;
     }
 
     /**
