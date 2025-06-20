@@ -127,16 +127,7 @@ public class GestorTiendaJuegos {
             case 2:
                 System.out.println("Introduce el DNI del cliente que deseas dar de baja.");
                 dni = sc.nextLine().toUpperCase();
-                if (clienteExiste(dni, listaClientes)) {
-                    for (Cliente c : listaClientes) {
-                        if (dni.equals(c.getDni())) {
-                            System.out.println("Cliente " + c.getNombre() + " con DNI " + c.getDni() + " eliminado de la base de datos correctamente.");
-                            listaClientes.remove(c);
-                        }
-                    }
-                } else {
-                    System.out.println("El DNI introducido no coincide con ningún cliente de la base de datos.");
-                }
+                System.out.println(bajaCliente(dni, listaClientes));
                 break;
             case 3:
                 System.out.println("Ingresa el DNI del cliente para modificar sus datos:");
@@ -192,53 +183,13 @@ public class GestorTiendaJuegos {
             case 4:
                 System.out.println("Ingresa el DNI del cliente que quieres ver:");
                 dni = sc.nextLine().toUpperCase();
-                if (clienteExiste(dni, listaClientes)) {
-                    for (Cliente c : listaClientes) {
-                        if (c.getDni().equals(dni)) {
-                            System.out.println("\nCliente: " + c.getNombre());
-                            System.out.println("DNI: " + c.getDni());
-                            System.out.println("Teléfono: " + c.getTelefono());
-                            System.out.println("Correo electrónico: " + c.getEmail());
-                            System.out.printf("Importe total de ventas: %.2f€\n\n", c.getImporteVentas());
-                        }
-                    }
-                } else {
-                    System.out.println("El DNI introducido no coincide con ningún cliente de la base de datos.");
-                }
+                System.out.println(buscarPorDni(dni, listaClientes));
                 break;
             case 5:
-                System.out.println("Listado de clientes (Orden alfabético)");
-                ArrayList<String> nombresID = new ArrayList<>();
-                for (Cliente c : listaClientes) {
-                    nombresID.add(c.getNombre().toLowerCase() + "::" + c.getDni());
-                }
-                Collections.sort(nombresID);
-                for (String nombre : nombresID) {
-                    for (Cliente c : listaClientes) {
-                        if ((c.getNombre().toLowerCase() + "::"+ c.getDni()).equals(nombre)) {
-                            System.out.println(c.getNombre() + ", DNI: " + c.getDni() + ", teléfono: " + c.getTelefono()
-                            + ", correo electrónico: " + c.getEmail() + ", valor en ventas: " + String.format("%.2f", c.getImporteVentas()) + "€.");
-                        }
-                    }
-                }
-                System.out.println();
+                listarAlfabetico(listaClientes);
                 break;
             case 6:
-                System.out.println("Listado de clientes (Orden por importe de ventas)");
-                for (int i = 0; i < listaClientes.size() - 1; i++) {
-                    for (int j = i + 1; j < listaClientes.size(); j++) {
-                        if (listaClientes.get(i).getImporteVentas() > listaClientes.get(j).getImporteVentas()) {
-                            Cliente c = listaClientes.get(i);
-                            listaClientes.set(i, listaClientes.get(j));
-                            listaClientes.set(j, c);
-                        }
-                    }
-                }
-                for (Cliente c : listaClientes) {
-                    System.out.println(String.format("%.2f", c.getImporteVentas()) + "€, " + c.getNombre() +
-                            ", DNI: " + c.getDni() + ", teléfono: " + c.getTelefono() + ", correo electrónico: " + c.getEmail() + ".");
-                }
-                System.out.println();
+                listarPorVentas(listaClientes);
                 break;
             case 7:
                 System.out.println("Saliendo del sistema de gestión de clientes.\n");
@@ -264,8 +215,88 @@ public class GestorTiendaJuegos {
             return "Nuevo cliente " + nombre + " con DNI " + dni + " dado de alta correctamente.\n";
     }
 
-    public static void bajaCliente() {
+    /**
+     * Función para dar de baja un cliente existente.
+     * @param dni String con el dni del cliente existente.
+     * @param listaClientes Lista de donde se eliminará el cliente existente.
+     * @return Mensaje de éxito en caso de eliminar el cliente o, en caso contrario, mensaje de error si el cliente no existe.
+     */
+    public static String bajaCliente(String dni, ArrayList<Cliente> listaClientes) {
+        if (clienteExiste(dni, listaClientes)) {
+            for (Cliente c : listaClientes) {
+                if (dni.equals(c.getDni())) {
+                    listaClientes.remove(c);
+                    return ("Cliente " + c.getNombre() + " con DNI " + c.getDni() + " eliminado de la base de datos correctamente.");
+                }
+            }
+        }
+        return("El DNI introducido no coincide con ningún cliente de la base de datos.");
+    }
 
+    /**
+     * Función para buscar un cliente en una lista de clientes por su DNI.
+     * @param dni String con el dni del cliente que queremos encontrar.
+     * @param listaClientes Lista de clientes donde queremos encontrar al cliente por su DNI.
+     * @return Mensaje con la información del cliente encontrado o, en caso de no existir el DNI en la lista, mensaje de error.
+     */
+    public static String buscarPorDni(String dni, ArrayList<Cliente> listaClientes) {
+        if (clienteExiste(dni, listaClientes)) {
+            for (Cliente c : listaClientes) {
+                if (c.getDni().equals(dni)) {
+                    String cliente = ("\nCliente: " + c.getNombre() +
+                            "\nDNI: " + c.getDni() +
+                            "\nTeléfono: " + c.getTelefono() +
+                            "\nCorreo electrónico: " + c.getEmail() +
+                            "\nImporte total de ventas: " + String.format("%.2f", c.getImporteVentas()));
+                    return cliente;
+                }
+            }
+        }
+        return "El DNI introducido no coincide con ningún cliente de la base de datos.";
+    }
+
+    /**
+     * Función que imprime la lista de clientes con sus datos en orden alfabético.
+     * @param listaClientes Lista de los clientes que se quiere ordenar y listar.
+     */
+    public static void listarAlfabetico(ArrayList<Cliente> listaClientes) {
+        System.out.println("Listado de clientes (Orden alfabético)");
+        ArrayList<String> nombresID = new ArrayList<>();
+        for (Cliente c : listaClientes) {
+            nombresID.add(c.getNombre().toLowerCase() + "::" + c.getDni());
+        }
+        Collections.sort(nombresID);
+        for (String nombre : nombresID) {
+            for (Cliente c : listaClientes) {
+                if ((c.getNombre().toLowerCase() + "::"+ c.getDni()).equals(nombre)) {
+                    System.out.println(c.getNombre() + ", DNI: " + c.getDni() + ", teléfono: " + c.getTelefono()
+                            + ", correo electrónico: " + c.getEmail() + ", valor en ventas: " + String.format("%.2f", c.getImporteVentas()) + "€.");
+                }
+            }
+        }
+        System.out.println();
+    }
+
+    /**
+     * Función que ordena e imprime la lista de clientes según el importe de las ventas realizadas a dicho cliente.
+     * @param listaClientes Lista de los clientes que se quiere ordenar y listar.
+     */
+    public static void listarPorVentas(ArrayList<Cliente> listaClientes) {
+        System.out.println("Listado de clientes (Orden por importe de ventas)");
+        for (int i = 0; i < listaClientes.size() - 1; i++) {
+            for (int j = i + 1; j < listaClientes.size(); j++) {
+                if (listaClientes.get(i).getImporteVentas() > listaClientes.get(j).getImporteVentas()) {
+                    Cliente c = listaClientes.get(i);
+                    listaClientes.set(i, listaClientes.get(j));
+                    listaClientes.set(j, c);
+                }
+            }
+        }
+        for (Cliente c : listaClientes) {
+            System.out.println(String.format("%.2f", c.getImporteVentas()) + "€, " + c.getNombre() +
+                    ", DNI: " + c.getDni() + ", teléfono: " + c.getTelefono() + ", correo electrónico: " + c.getEmail() + ".");
+        }
+        System.out.println();
     }
 
     /**
