@@ -119,9 +119,7 @@ public class GestorTiendaJuegos {
                     String telefono = sc.nextLine();
                     System.out.println("Introduce su correo electrónico:");
                     String email = sc.nextLine();
-                    Cliente cliente = new Cliente(nombre, dni, telefono, email);
-                    listaClientes.add(cliente);
-                    System.out.println("Nuevo cliente " + nombre + " con DNI " + dni + " dado de alta correctamente.\n");
+                    System.out.println(altaCliente(nombre, dni, telefono, email, listaClientes));
                 } else {
                     System.out.println("El cliente con DNI " + dni + " ya existe en la base de datos.\n");
                 }
@@ -248,6 +246,25 @@ public class GestorTiendaJuegos {
             default:
                 System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
         }
+
+    }
+
+    /**
+     * Función para dar de alta un cliente nuevo.
+     * @param nombre String con el nombre del nuevo cliente.
+     * @param dni String con el dni del nuevo cliente.
+     * @param telefono String con el teléfono del nuevo cliente.
+     * @param email String con el correo electrónico del nuevo cliente.
+     * @param listaClientes Lista donde se guardará el nuevo cliente.
+     * @return String con mensaje de éxito al crear el nuevo cliente.
+     */
+    public static String altaCliente(String nombre, String dni, String telefono, String email, ArrayList<Cliente> listaClientes) {
+            Cliente cliente = new Cliente(nombre, dni, telefono, email);
+            listaClientes.add(cliente);
+            return "Nuevo cliente " + nombre + " con DNI " + dni + " dado de alta correctamente.\n";
+    }
+
+    public static void bajaCliente() {
 
     }
 
