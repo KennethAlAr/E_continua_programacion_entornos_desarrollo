@@ -753,21 +753,6 @@ public class GestorJuegos {
     }
 
     /**
-     * Función para saber si un juego existe en una lista de juegos según el nombre del mismo.
-     * @param nombre Nombre del juego que se quiere comprobar si existe en el catálogo.
-     * @param catalogoJuegos Catálogo de juegos donde se quiere comprobar si existe el juego.
-     * @return True si el juego ya existe y false en caso contrario.
-     */
-    public static boolean juegoExiste(String nombre, ArrayList<Juego> catalogoJuegos) {
-        for (Juego j : catalogoJuegos) {
-            if (j.getNombre().equals(nombre)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Función para eliminar un juego de una lista de cátalogo de juegos.
      * @param nombre Nombre del juego que se quiere eliminar.
      * @param catalogoJuegos Lista de donde se eliminará el juego.
@@ -783,6 +768,21 @@ public class GestorJuegos {
             }
         }
         return "El juego '" + nombre + "' no se encuentra en el catálogo de juegos.";
+    }
+
+    /**
+     * Función para saber si un juego existe en una lista de juegos según el nombre del mismo.
+     * @param nombre Nombre del juego que se quiere comprobar si existe en el catálogo.
+     * @param catalogoJuegos Catálogo de juegos donde se quiere comprobar si existe el juego.
+     * @return True si el juego ya existe y false en caso contrario.
+     */
+    public static boolean juegoExiste(String nombre, ArrayList<Juego> catalogoJuegos) {
+        for (Juego j : catalogoJuegos) {
+            if (j.getNombre().equals(nombre)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

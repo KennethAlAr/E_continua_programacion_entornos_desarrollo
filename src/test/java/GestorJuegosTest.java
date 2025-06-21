@@ -3,12 +3,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GestorJuegosTest {
 
-    static ArrayList<Juego> catalogoJuegos;
+    private ArrayList<Juego> catalogoJuegos;
 
     @BeforeEach
     public void configuracionInicial() {
@@ -68,6 +72,32 @@ class GestorJuegosTest {
     public void eliminarJuegoNoExistente() {
         String nombre = "Tekken";
         assertEquals("El juego 'Tekken' no se encuentra en el catálogo de juegos.", GestorJuegos.eliminarJuego(nombre, catalogoJuegos));
+    }
+
+    @Test
+    public void juegoExiste() {
+        String nombre = "Zelda";
+        assertTrue(GestorJuegos.juegoExiste(nombre, catalogoJuegos));
+    }
+
+    @Test
+    public void juegoNoExiste() {
+        String nombre = "Tekken";
+        assertFalse(GestorJuegos.juegoExiste(nombre, catalogoJuegos));
+    }
+
+    @Test
+    public void seleccionarJuego() {
+        String nombre = "Zelda";
+        assertEquals("Zelda", GestorJuegos.seleccionarJuego(nombre, catalogoJuegos).getNombre());
+        assertEquals("Aventura", GestorJuegos.seleccionarJuego(nombre, catalogoJuegos).getGenero());
+        assertEquals("PEGI-12", GestorJuegos.seleccionarJuego(nombre, catalogoJuegos).getPegi());
+    }
+
+    @Test
+    public void seleccionarJuegoNoExiste() {
+        String nombre = "Tekken";
+        assertThrows(NoSuchElementException.class, () -> {GestorJuegos.seleccionarJuego(nombre, catalogoJuegos);});
     }
 
     @AfterEach
