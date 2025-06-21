@@ -236,6 +236,9 @@ public class GestorJuegos {
                 }
                 break;
             case 2:
+                System.out.println("¿Qué juego quieres eliminar del catálogo?");
+                nombre = sc.nextLine();
+                System.out.println(eliminarJuego(nombre, catalogoJuegos));
                 break;
             case 3:
                 break;
@@ -261,7 +264,7 @@ public class GestorJuegos {
         String menu = "### GESTIÓN DE INVENTARIO ###\n\n" +
                 "1. Añadir juego al catálogo\n" +
                 "2. Eliminar juego del catálogo\n" +
-                "3. Modificar stock de juego\n" +
+                "3. Modificar juego\n" +
                 "4. Buscar juego por consola\n" +
                 "5. Listado de juegos (Orden Alfabético)\n" +
                 "6. Listado de juegos (Orden por stock)\n" +
@@ -283,6 +286,24 @@ public class GestorJuegos {
             }
         }
         return false;
+    }
+
+    /**
+     * Función para eliminar un juego de una lista de cátalogo de juegos.
+     * @param nombre Nombre del juego que se quiere eliminar.
+     * @param catalogoJuegos Lista de donde se eliminará el juego.
+     * @return Mensaje de éxito si el juego se ha podido eliminar o, en caso contrario, mensaje de error.
+     */
+    public static String eliminarJuego(String nombre, ArrayList<Juego> catalogoJuegos) {
+        if (juegoExiste(nombre, catalogoJuegos)) {
+            for (Juego j : catalogoJuegos) {
+                if (j.getNombre().equals(nombre)) {
+                    catalogoJuegos.remove(j);
+                    return "Juego '" + nombre + "' eliminado del catálogo de juegos.";
+                }
+            }
+        }
+        return "El juego '" + nombre + "' no se encuentra en el catálogo de juegos.";
     }
 
 }
