@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class GestorJuegos {
 
@@ -243,6 +240,467 @@ public class GestorJuegos {
                 System.out.println(eliminarJuego(nombre, catalogoJuegos));
                 break;
             case 3:
+                System.out.println("¿Qué juego quieres modificar?");
+                nombre = sc.nextLine();
+                boolean activador = true;
+                if (juegoExiste(nombre, catalogoJuegos)) {
+                    int opcionModificar = 0;
+                    do {
+                        try {
+                            System.out.println("""
+                                    ¿Qué quieres modificar?
+                                    1. Nombre
+                                    2. Género
+                                    3. Calificación PEGI
+                                    4. Sistemas disponibles
+                                    5. Salir
+                                    """
+                            );
+                            opcionModificar = sc.nextInt();
+                            sc.nextLine();
+                            if (opcionModificar > 0 && opcionModificar < 6) {
+                                activador = false;
+                            } else {
+                                System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                            }
+                        } catch (InputMismatchException e) {
+                            System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                            sc.nextLine();
+                        }
+                    } while (activador);
+                    switch(opcionModificar) {
+                        case 1:
+                            System.out.println("Modificando el nombre del juego:\n¿Cuál es el nuevo nombre de '" + nombre + "'?");
+                            String nuevoNombre = sc.nextLine();
+                            System.out.println(seleccionarJuego(nombre, catalogoJuegos).modificarNombre(nuevoNombre));
+                            break;
+                        case 2:
+                            System.out.println("Modificando el género del juego:\n¿Cuál es el nuevo género de '" + nombre + "'?");
+                            String nuevoGenero = sc.nextLine();
+                            System.out.println(seleccionarJuego(nombre, catalogoJuegos).modificarGenero(nuevoGenero));
+                            break;
+                        case 3:
+                            activador = true;
+                            String nuevoPegi = "";
+                            do {
+                                try {
+                                    System.out.println("""
+                                            Modificando la calificación PEGI del juego:
+                                            ¿Cuál es la nueva calificación PEGI?
+                                            1. PEGI-3
+                                            2. PEGI-7
+                                            3. PEGI-12
+                                            4. PEGI-16
+                                            5. PEGI-18
+                                            """);
+                                    int opcionPegi = sc.nextInt();
+                                    sc.nextLine();
+                                    if (opcionPegi > 0 && opcionPegi < 6) {
+                                        activador = false;
+                                        if (opcionPegi == 1) {
+                                            nuevoPegi = "PEGI-3";
+                                        } else if (opcionPegi == 2) {
+                                            nuevoPegi = "PEGI-7";
+                                        } else if (opcionPegi == 3) {
+                                            nuevoPegi = "PEGI-12";
+                                        } else if (opcionPegi == 4) {
+                                            nuevoPegi = "PEGI-16";
+                                        } else {
+                                            nuevoPegi = "PEGI-18";
+                                        }
+                                    } else {
+                                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                    }
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                    sc.nextLine();
+                                }
+                            } while (activador);
+                            System.out.println(seleccionarJuego(nombre, catalogoJuegos).modificarPegi(nuevoPegi));
+                            break;
+                        case 4:
+                            System.out.println("El juego " + nombre + " está disponible en los siguientes sistemas:");
+                            System.out.println(seleccionarJuego(nombre, catalogoJuegos).getSistemas());
+                            System.out.println("¿Qué deseas hacer?");
+                            int opcionSistema = 0;
+                            if (seleccionarJuego(nombre, catalogoJuegos).getNumeroSistemas() >= 4) {
+                                activador = true;
+                                do {
+                                    try {
+                                        System.out.println("""
+                                                1. Modificar un sistema existente
+                                                2. Eliminar un sistema existente
+                                                3. Salir
+                                                """);
+                                        opcionSistema = sc.nextInt();
+                                        sc.nextLine();
+                                        if (opcionSistema > 0 && opcionSistema < 4) {
+                                            activador = false;
+                                        } else {
+                                            System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                        }
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                        sc.nextLine();
+                                    }
+                                } while (activador);
+                                switch(opcionSistema) {
+                                    case 1:
+                                        System.out.println("¿Qué sistema quieres modificar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
+                                        for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas())
+                                            System.out.println(consola);
+                                        String sistemaModificar;
+                                        do {
+                                            sistemaModificar = sc.nextLine();
+                                            if (seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaModificar)) {
+                                                int opcionModificarSistema = 0;
+                                                do {
+                                                    try {
+                                                        System.out.println("Modificando sistema '" + sistemaModificar + "'.");
+                                                        System.out.println("""
+                                                                1. Modificar precio
+                                                                2. Modificar stock
+                                                                3. Salir
+                                                                """);
+                                                        opcionModificarSistema = sc.nextInt();
+                                                        sc.nextLine();
+                                                        if (!(opcionModificarSistema == 1 || opcionModificarSistema == 2 || opcionModificarSistema == 3)) {
+                                                            System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                                        }
+                                                    } catch (InputMismatchException e) {
+                                                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                                        sc.nextLine();
+                                                    }
+                                                } while (!(opcionModificarSistema == 1 || opcionModificarSistema == 2 || opcionModificarSistema == 3));
+                                                switch(opcionModificarSistema) {
+                                                    case 1:
+                                                        activador = true;
+                                                        do {
+                                                            try {
+                                                                System.out.println("El precio actual de '" + nombre + "' en " + sistemaModificar + "es de " + seleccionarJuego(nombre, catalogoJuegos).getPrecio(sistemaModificar) + "€.");
+                                                                System.out.println("¿Cuál es el precio nuevo?");
+                                                                double precio = sc.nextDouble();
+                                                                sc.nextLine();
+                                                                seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarPrecio(precio);
+                                                                System.out.println("Precio de '" + nombre + "' en " + sistemaModificar + " actualizado a " + precio + "€.");
+                                                                activador = false;
+                                                            } catch (InputMismatchException e) {
+                                                                System.out.println("Precio no válido, por favor, introduce un precio válido.\n");
+                                                                sc.nextLine();
+                                                            }
+                                                        } while (activador);
+                                                        break;
+                                                    case 2:
+                                                        activador = true;
+                                                        do {
+                                                            try {
+                                                                System.out.println("El stock actual de '" + nombre + "' en " + sistemaModificar + " es de " + seleccionarJuego(nombre, catalogoJuegos).getStock(sistemaModificar) + "ud.");
+                                                                System.out.println("¿Cuál es el nuevo stock?");
+                                                                int stock = sc.nextInt();
+                                                                sc.nextLine();
+                                                                seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
+                                                                System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "€.");
+                                                                activador = false;
+                                                            } catch (InputMismatchException e) {
+                                                                System.out.println("Stock no válido, por favor, introduce un stock válido.\n");
+                                                                sc.nextLine();
+                                                            }
+                                                        } while (activador);
+                                                        break;
+                                                    case 3:
+                                                        sistemaModificar = "salir";
+                                                        break;
+                                                }
+                                            } else if (sistemaModificar.equalsIgnoreCase("salir")){
+                                                break;
+                                            } else {
+                                                System.out.println("El sistema no existe o no coincide exactamente con el nombre del sistema.");
+                                            }
+                                        } while (!seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaModificar) || sistemaModificar.equalsIgnoreCase("salir"));
+                                        break;
+                                    case 2:
+                                        String sistemaEliminar;
+                                        activador = true;
+                                        do {
+                                            System.out.println("¿Qué sistema quieres eliminar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
+                                            for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas())
+                                                System.out.println(consola);
+                                            sistemaEliminar = sc.nextLine();
+                                            if (seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaEliminar)) {
+                                                seleccionarJuego(nombre, catalogoJuegos).eliminarEdicion(sistemaEliminar);
+                                                System.out.println("Sistema eliminado.");
+                                                activador = false;
+                                            } else if (sistemaEliminar.equalsIgnoreCase("salir")){
+                                                activador = false;
+                                            } else {
+                                                System.out.println("El sistema no existe o no coincide exactamente con el nombre del sistema.");
+                                            }
+                                        } while (activador);
+                                        break;
+                                    case 3:
+                                        break;
+                                }
+                            } else if (seleccionarJuego(nombre, catalogoJuegos).getNumeroSistemas() <= 0){
+                                activador = true;
+                                do {
+                                    try {
+                                        System.out.println("""
+                                                1. Añadir un nuevo sistema
+                                                2. Salir
+                                                """);
+                                        opcionSistema = sc.nextInt();
+                                        sc.nextLine();
+                                        if (opcionSistema > 0 && opcionSistema < 3) {
+                                            activador = false;
+                                        } else {
+                                            System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                        }
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                        sc.nextLine();
+                                    }
+                                } while (activador);
+                                switch(opcionSistema) {
+                                    case 1:
+                                        activador = true;
+                                        do {
+                                            System.out.println("""
+                                                    Escribe el nombre del sistema que quieres añadir:
+                                                    XBOX
+                                                    Nintendo
+                                                    Play Station
+                                                    PC
+                                                    """);
+                                            String nuevoSistema = sc.nextLine().toLowerCase();
+                                            String[] listaSistemas = {"xbox", "nintendo", "play station", "pc"};
+                                            if (Arrays.asList(listaSistemas).contains(nuevoSistema)) {
+                                                activador = false;
+                                                String consola = switch (nuevoSistema) {
+                                                    case "xbox" -> "XBOX";
+                                                    case "nintendo" -> "Nintendo";
+                                                    case "play station" -> "Play Station";
+                                                    default -> "PC";
+                                                };
+                                                boolean activadorPrecio = true;
+                                                double precio = 0f;
+                                                do {
+                                                    try {
+                                                        System.out.println("¿Qué precio tiene el juego '" + nombre + "' en " + consola +"?");
+                                                        precio = sc.nextDouble();
+                                                        sc.nextLine();
+                                                        activadorPrecio = false;
+                                                    } catch (InputMismatchException e) {
+                                                        System.out.println("Importe no válido, por favor, ingresa un importe válido.");
+                                                        sc.nextLine();
+                                                    }
+                                                } while (activadorPrecio);
+                                                boolean activadorStock = true;
+                                                int stock = 0;
+                                                do {
+                                                    try {
+                                                        System.out.println("¿Cuantás unidades del juego '" + nombre + "' en " + consola + " quieres añadir al stock?");
+                                                        stock = sc.nextInt();
+                                                        sc.nextLine();
+                                                        activadorStock = false;
+                                                    } catch (InputMismatchException e) {
+                                                        System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
+                                                        sc.nextLine();
+                                                    }
+                                                } while (activadorStock);
+                                                EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
+                                                seleccionarJuego(nombre, catalogoJuegos).anadirEdicion(consola, edicionJuego);
+                                            } else {
+                                                System.out.println("Sistema no válido, por favor escribe el nombre de un sistema de la lista.");
+                                            }
+                                        } while(activador);
+                                        break;
+                                    case 2:
+                                        break;
+                                }
+                            } else {
+                                activador = true;
+                                do {
+                                    try {
+                                        System.out.println("""
+                                                1. Modificar un sistema existente
+                                                2. Eliminar un sistema existente
+                                                3. Añadir un nuevo sistema
+                                                4. Salir
+                                                """);
+                                        opcionSistema = sc.nextInt();
+                                        sc.nextLine();
+                                        if (opcionSistema > 0 && opcionSistema < 5) {
+                                            activador = false;
+                                        } else {
+                                            System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                        }
+                                    } catch (InputMismatchException e) {
+                                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                        sc.nextLine();
+                                    }
+                                } while (activador);
+                                switch(opcionSistema) {
+                                    case 1:
+                                        System.out.println("¿Qué sistema quieres modificar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
+                                        for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas())
+                                            System.out.println(consola);
+                                        String sistemaModificar;
+                                        do {
+                                            sistemaModificar = sc.nextLine();
+                                            if (seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaModificar)) {
+                                                int opcionModificarSistema = 0;
+                                                do {
+                                                    try {
+                                                        System.out.println("Modificando sistema '" + sistemaModificar + "'.");
+                                                        System.out.println("""
+                                                                1. Modificar precio
+                                                                2. Modificar stock
+                                                                3. Salir
+                                                                """);
+                                                        opcionModificarSistema = sc.nextInt();
+                                                        sc.nextLine();
+                                                        if (!(opcionModificarSistema == 1 || opcionModificarSistema == 2 || opcionModificarSistema == 3)) {
+                                                            System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                                        }
+                                                    } catch (InputMismatchException e) {
+                                                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                                                        sc.nextLine();
+                                                    }
+                                                } while (!(opcionModificarSistema == 1 || opcionModificarSistema == 2 || opcionModificarSistema == 3));
+                                                switch(opcionModificarSistema) {
+                                                    case 1:
+                                                        activador = true;
+                                                        do {
+                                                            try {
+                                                                System.out.println("El precio actual de '" + nombre + "' en " + sistemaModificar + "es de " + seleccionarJuego(nombre, catalogoJuegos).getPrecio(sistemaModificar) + "€.");
+                                                                System.out.println("¿Cuál es el precio nuevo?");
+                                                                double precio = sc.nextDouble();
+                                                                sc.nextLine();
+                                                                seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarPrecio(precio);
+                                                                System.out.println("Precio de '" + nombre + "' en " + sistemaModificar + " actualizado a " + precio + "€.");
+                                                                activador = false;
+                                                            } catch (InputMismatchException e) {
+                                                                System.out.println("Precio no válido, por favor, introduce un precio válido.\n");
+                                                                sc.nextLine();
+                                                            }
+                                                        } while (activador);
+                                                        break;
+                                                    case 2:
+                                                        activador = true;
+                                                        do {
+                                                            try {
+                                                                System.out.println("El stock actual de '" + nombre + "' en " + sistemaModificar + " es de " + seleccionarJuego(nombre, catalogoJuegos).getStock(sistemaModificar) + "ud.");
+                                                                System.out.println("¿Cuál es el nuevo stock?");
+                                                                int stock = sc.nextInt();
+                                                                sc.nextLine();
+                                                                seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
+                                                                System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "€.");
+                                                                activador = false;
+                                                            } catch (InputMismatchException e) {
+                                                                System.out.println("Stock no válido, por favor, introduce un stock válido.\n");
+                                                                sc.nextLine();
+                                                            }
+                                                        } while (activador);
+                                                        break;
+                                                    case 3:
+                                                        sistemaModificar = "salir";
+                                                        break;
+                                                }
+                                            } else if (sistemaModificar.equalsIgnoreCase("salir")){
+                                                break;
+                                            } else {
+                                                System.out.println("El sistema no existe o no coincide exactamente con el nombre del sistema.");
+                                            }
+                                        } while (!seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaModificar) || sistemaModificar.equalsIgnoreCase("salir"));
+                                        break;
+                                    case 2:
+                                        String sistemaEliminar;
+                                        activador = true;
+                                        do {
+                                            System.out.println("¿Qué sistema quieres eliminar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
+                                            for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas())
+                                                System.out.println(consola);
+                                            sistemaEliminar = sc.nextLine();
+                                            if (seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaEliminar)) {
+                                                seleccionarJuego(nombre, catalogoJuegos).eliminarEdicion(sistemaEliminar);
+                                                System.out.println("Sistema eliminado.");
+                                                activador = false;
+                                            } else if (sistemaEliminar.equalsIgnoreCase("salir")){
+                                                activador = false;
+                                            } else {
+                                                System.out.println("El sistema no existe o no coincide exactamente con el nombre del sistema.");
+                                            }
+                                        } while (activador);
+                                        break;
+                                    case 3:
+                                        activador = true;
+                                        do {
+                                            System.out.println("Escribe el nombre del sistema que quieres añadir:");
+                                            ArrayList<String> listaSistemasActuales = seleccionarJuego(nombre, catalogoJuegos).getConsolas();
+                                            ArrayList<String> listaSistemas = new ArrayList<>();
+                                            listaSistemas.add("XBOX");
+                                            listaSistemas.add("Nintendo");
+                                            listaSistemas.add("Play Station");
+                                            listaSistemas.add("PC");
+                                            listaSistemas.removeAll(listaSistemasActuales);
+                                            for (int i = 0; i < listaSistemas.size(); i++) {
+                                                System.out.println(listaSistemas.get(i));
+                                                listaSistemas.set(i, listaSistemas.get(i).toLowerCase());
+                                            }
+                                            String nuevoSistema = sc.nextLine().toLowerCase();
+                                            if (listaSistemas.contains(nuevoSistema)) {
+                                                activador = false;
+                                                String consola = switch (nuevoSistema) {
+                                                    case "xbox" -> "XBOX";
+                                                    case "nintendo" -> "Nintendo";
+                                                    case "play station" -> "Play Station";
+                                                    default -> "PC";
+                                                };
+                                                boolean activadorPrecio = true;
+                                                double precio = 0f;
+                                                do {
+                                                    try {
+                                                        System.out.println("¿Qué precio tiene el juego '" + nombre + "' en " + consola +"?");
+                                                        precio = sc.nextDouble();
+                                                        sc.nextLine();
+                                                        activadorPrecio = false;
+                                                    } catch (InputMismatchException e) {
+                                                        System.out.println("Importe no válido, por favor, ingresa un importe válido.");
+                                                        sc.nextLine();
+                                                    }
+                                                } while (activadorPrecio);
+                                                boolean activadorStock = true;
+                                                int stock = 0;
+                                                do {
+                                                    try {
+                                                        System.out.println("¿Cuantás unidades del juego '" + nombre + "' en " + consola + " quieres añadir al stock?");
+                                                        stock = sc.nextInt();
+                                                        sc.nextLine();
+                                                        activadorStock = false;
+                                                    } catch (InputMismatchException e) {
+                                                        System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
+                                                        sc.nextLine();
+                                                    }
+                                                } while (activadorStock);
+                                                EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
+                                                seleccionarJuego(nombre, catalogoJuegos).anadirEdicion(consola, edicionJuego);
+                                            } else {
+                                                System.out.println("Sistema no válido, por favor escribe el nombre de un sistema de la lista.");
+                                            }
+                                        } while(activador);
+                                        break;
+                                    case 4:
+                                        break;
+                                }
+                            }
+                            break;
+                        case 5:
+                            System.out.println("Saliendo del sistema de modificación de juegos.");
+                            break;
+                    }
+                } else {
+                    System.out.println("El juego '" + nombre + "' no se encuentra en el catálogo de juegos.");
+                }
                 break;
             case 4:
                 break;
@@ -314,6 +772,22 @@ public class GestorJuegos {
             }
         }
         return "El juego '" + nombre + "' no se encuentra en el catálogo de juegos.";
+    }
+
+    /**
+     * Función para seleccionar un juego según su nombre de una lista de juegos.
+     * @param nombre Nombre del juego que se quiere seleccionar.
+     * @param catalogoJuegos Lista de juegos de donde se quiere seleccionar el juego.
+     * @return Juego que coincide con el nombre del juego.
+     * @throws NoSuchElementException en caso de no encontrarse el juego en la lista de juegos.
+     */
+    public static Juego seleccionarJuego (String nombre, ArrayList<Juego> catalogoJuegos) {
+        for (Juego j : catalogoJuegos) {
+            if (j.getNombre().equals(nombre)) {
+                return j;
+            }
+        }
+        throw new NoSuchElementException("El juego '" + nombre + "' no se encuentra en el catálogo de juegos.");
     }
 
 }

@@ -15,4 +15,7 @@ public class EdicionJuego {
     public double getPrecio() {return this.precio;}
     public int getStock() {return this.stock;}
 
+    public void modificarPrecio(double nuevoPrecio) {this.precio = nuevoPrecio;}
+    public void modificarStock(int nuevoStock) {this.stock = nuevoStock;}
+
 }
