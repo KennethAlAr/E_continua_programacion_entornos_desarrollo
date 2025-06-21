@@ -278,6 +278,13 @@ public class GestorJuegos {
         return menu;
     }
 
+    /**
+     * Función para crear y añadir un juego a una lista de juegos.
+     * @param nombre Nombre del juego que se quiere crear.
+     * @param genero Género del juego que se quiere crear.
+     * @param pegi PEGI del juego que se quiere crear.
+     * @param catalogoJuegos Lista de juegos donde se quiere añadir el nuevo juego creado.
+     */
     public static void anadirJuego (String nombre, String genero, String pegi, ArrayList<Juego> catalogoJuegos) {
         Juego j = new Juego(nombre, genero, pegi);
         catalogoJuegos.add(j);

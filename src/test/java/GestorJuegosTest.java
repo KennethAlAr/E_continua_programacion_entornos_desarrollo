@@ -48,6 +48,17 @@ class GestorJuegosTest {
     }
 
     @Test
+    public void anadirJuego() {
+        String nombre = "Tekken";
+        String genero = "Lucha";
+        String pegi = "PEGI-16";
+        GestorJuegos.anadirJuego(nombre, genero, pegi, catalogoJuegos);
+        assertEquals("Tekken" , catalogoJuegos.getLast().getNombre());
+        assertEquals("Lucha", catalogoJuegos.getLast().getGenero());
+        assertEquals("PEGI-16", catalogoJuegos.getLast().getPegi());
+    }
+
+    @Test
     public void eliminarJuego() {
         String nombre = "Zelda";
         assertEquals("Juego 'Zelda' eliminado del catálogo de juegos.", GestorJuegos.eliminarJuego(nombre, catalogoJuegos));
