@@ -8,13 +8,16 @@ public class GestorTiendaJuegosTest {
 
     @Test
     public void menuPrincipal() {
-        String menu = "### MENÚ PRINCIPAL ###\n\n" +
-                "1. Gestión de clientes\n" +
-                "2. Gestión de inventario\n" +
-                "3. Realizar venta\n" +
-                "4. Mostrar ventas\n" +
-                "5. Salir\n\n" +
-                "Elige una opción:";
+        String menu = """
+                ### MENÚ PRINCIPAL ###
+                
+                1. Gestión de clientes
+                2. Gestión de inventario
+                3. Realizar venta
+                4. Mostrar ventas
+                5. Salir
+                
+                Elige una opción:""";
         assertEquals(menu, GestorTiendaJuegos.menuPrincipal());
     }
 

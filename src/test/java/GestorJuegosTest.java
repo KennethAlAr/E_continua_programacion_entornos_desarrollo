@@ -32,15 +32,18 @@ class GestorJuegosTest {
 
     @Test
     public void menuJuegos() {
-        String menu = "### GESTIÓN DE INVENTARIO ###\n\n" +
-                "1. Añadir juego al catálogo\n" +
-                "2. Eliminar juego del catálogo\n" +
-                "3. Modificar juego\n" +
-                "4. Buscar juego por consola\n" +
-                "5. Listado de juegos (Orden Alfabético)\n" +
-                "6. Listado de juegos (Orden por stock)\n" +
-                "7. Salir\n\n" +
-                "Elige una opción:";
+        String menu = """
+                ### GESTIÓN DE INVENTARIO ###
+                
+                1. Añadir juego al catálogo
+                2. Eliminar juego del catálogo
+                3. Modificar juego
+                4. Buscar juego por consola
+                5. Listado de juegos (Orden Alfabético)
+                6. Listado de juegos (Orden por stock)
+                7. Salir
+                
+                Elige una opción:""";
         assertEquals(menu, GestorJuegos.menuJuegos());
     }
 

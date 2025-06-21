@@ -24,15 +24,18 @@ class GestorClientesTest {
 
     @Test
     public void menuClientes() {
-        String menu = "### GESTIÓN DE CLIENTES ###\n\n" +
-                "1. Alta de cliente nuevo\n" +
-                "2. Baja de cliente existente\n" +
-                "3. Modificar datos de cliente\n" +
-                "4. Buscar cliente por DNI\n" +
-                "5. Listado de clientes (Orden Alfabético)\n" +
-                "6. Listado de clientes (Orden por importe de Ventas)\n" +
-                "7. Salir\n\n" +
-                "Elige una opción:";
+        String menu = """
+                ### GESTIÓN DE CLIENTES ###
+                
+                1. Alta de cliente nuevo
+                2. Baja de cliente existente
+                3. Modificar datos de cliente
+                4. Buscar cliente por DNI
+                5. Listado de clientes (Orden Alfabético)
+                6. Listado de clientes (Orden por importe de Ventas)
+                7. Salir
+                
+                Elige una opción:""";
         assertEquals(menu, GestorClientes.menuClientes());
     }
 
@@ -78,10 +81,12 @@ class GestorClientesTest {
     public void listarAlfabetico() {
         GestorClientes.altaCliente("Sara", "87654321B", "666456456", "sara@email.com", listaClientes);
         GestorClientes.altaCliente("Jordi", "78945612C", "666789789", "jordi@email.com", listaClientes);
-        assertEquals("Listado de clientes (Orden alfabético)\n" +
-                "Jordi, DNI: 78945612C, teléfono: 666789789, correo electrónico: jordi@email.com, valor en ventas: 0,00€.\n" +
-                "Kenneth, DNI: 12345678A, teléfono: 666123123, correo electrónico: kenneth@email.com, valor en ventas: 0,00€.\n" +
-                "Sara, DNI: 87654321B, teléfono: 666456456, correo electrónico: sara@email.com, valor en ventas: 0,00€.\n",
+        assertEquals("""
+                        Listado de clientes (Orden alfabético)
+                        Jordi, DNI: 78945612C, teléfono: 666789789, correo electrónico: jordi@email.com, valor en ventas: 0,00€.
+                        Kenneth, DNI: 12345678A, teléfono: 666123123, correo electrónico: kenneth@email.com, valor en ventas: 0,00€.
+                        Sara, DNI: 87654321B, teléfono: 666456456, correo electrónico: sara@email.com, valor en ventas: 0,00€.
+                        """,
                 GestorClientes.listarAlfabetico(listaClientes));
     }
 
@@ -89,15 +94,16 @@ class GestorClientesTest {
     public void listarPorVentas() {
         GestorClientes.altaCliente("Sara", "87654321B", "666456456", "sara@email.com", listaClientes);
         GestorClientes.altaCliente("Jordi", "78945612C", "666789789", "jordi@email.com", listaClientes);
-        double importe = 100.50;
         listaClientes.get(0).aumentarImporteVentas(500.50);
         listaClientes.get(1).aumentarImporteVentas(1000.60);
         listaClientes.get(2).aumentarImporteVentas(100.20);
 
-        assertEquals("Listado de clientes (Orden por importe de ventas)\n" +
-                "100,20€, Jordi, DNI: 78945612C, teléfono: 666789789, correo electrónico: jordi@email.com.\n" +
-                "500,50€, Kenneth, DNI: 12345678A, teléfono: 666123123, correo electrónico: kenneth@email.com.\n" +
-                "1000,60€, Sara, DNI: 87654321B, teléfono: 666456456, correo electrónico: sara@email.com.\n",
+        assertEquals("""
+                        Listado de clientes (Orden por importe de ventas)
+                        100,20€, Jordi, DNI: 78945612C, teléfono: 666789789, correo electrónico: jordi@email.com.
+                        500,50€, Kenneth, DNI: 12345678A, teléfono: 666123123, correo electrónico: kenneth@email.com.
+                        1000,60€, Sara, DNI: 87654321B, teléfono: 666456456, correo electrónico: sara@email.com.
+                        """,
                 GestorClientes.listarPorVentas(listaClientes));
     }
 
