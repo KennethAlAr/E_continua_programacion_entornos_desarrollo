@@ -63,15 +63,15 @@ public class GestorJuegos {
                             sc.nextLine();
                         }
                     }
-                    Juego juego = new Juego (nombre, genero, pegi);
-                    activador = true;
-                    ArrayList<Integer> numerosEdiciones = new ArrayList<>();
+                    anadirJuego(nombre, genero, pegi, catalogoJuegos);
                     // Bucle que solicita al usuario los sistemas en los que está disponible el juego.
                     // El usuario puede introducir múltiples opciones separadas por guiones (por ejemplo, "1-3-4").
                     // Del string obtenido del input del usuario se crea una lista de los números separados por un guion.
                     // Se convierte cada elemento de la lista a integer y se valida que esté dentro de las opciones válidas (1 a 4).
                     // Si todo es correcto se almacena en la lista numerosEdiciones para gestionar cada una de las ediciones más adelante.
                     // Si hay algún error (número no válido o formato incorrecto), se lanza una excepción y se vuelve a pedir el input al usuario.
+                    ArrayList<Integer> numerosEdiciones = new ArrayList<>();
+                    activador = true;
                     do {
                         try {
                             numerosEdiciones.clear();
@@ -133,7 +133,7 @@ public class GestorJuegos {
                                 }
                             } while (activador);
                             EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                            juego.anadirEdicion(consola, edicionJuego);
+                            catalogoJuegos.getLast().anadirEdicion(consola, edicionJuego);
                         }
                         if (numero == 2) {
                             String consola = "Nintendo";
@@ -164,7 +164,7 @@ public class GestorJuegos {
                                 }
                             } while (activador);
                             EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                            juego.anadirEdicion(consola, edicionJuego);
+                            catalogoJuegos.getLast().anadirEdicion(consola, edicionJuego);
                         }
                         if (numero == 3) {
                             String consola = "Play Station";
@@ -195,7 +195,7 @@ public class GestorJuegos {
                                 }
                             } while (activador);
                             EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                            juego.anadirEdicion(consola, edicionJuego);
+                            catalogoJuegos.getLast().anadirEdicion(consola, edicionJuego);
                         }
                         if (numero == 4) {
                             String consola = "PC";
@@ -226,13 +226,12 @@ public class GestorJuegos {
                                 }
                             } while (activador);
                             EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                            juego.anadirEdicion(consola, edicionJuego);
+                            catalogoJuegos.getLast().anadirEdicion(consola, edicionJuego);
                         }
                     }
-                    catalogoJuegos.add(juego);
-                    System.out.println("Juego '" + juego.getNombre() + "' (" + juego.getGenero() + ", " + juego.getPegi() + ") añadido en catálogo para las siguientes consolas:");
-                    for (String consola : juego.getConsolas()) {
-                        System.out.println(consola + " - " + String.format("%.2f", juego.getPrecio(consola)) + "€ - " + (juego.getStock(consola)) + "ud.");
+                    System.out.println("Juego '" + catalogoJuegos.getLast().getNombre() + "' (" + catalogoJuegos.getLast().getGenero() + ", " + catalogoJuegos.getLast().getPegi() + ") añadido en catálogo para las siguientes consolas:");
+                    for (String consola : catalogoJuegos.getLast().getConsolas()) {
+                        System.out.println(consola + " - " + String.format("%.2f", catalogoJuegos.getLast().getPrecio(consola)) + "€ - " + (catalogoJuegos.getLast().getStock(consola)) + "ud.");
                     }
                 } else {
                     System.out.println("El juego " + nombre + " ya existe en la base de datos.");
@@ -277,6 +276,11 @@ public class GestorJuegos {
                 
                 Elige una opción:""";
         return menu;
+    }
+
+    public static void anadirJuego (String nombre, String genero, String pegi, ArrayList<Juego> catalogoJuegos) {
+        Juego j = new Juego(nombre, genero, pegi);
+        catalogoJuegos.add(j);
     }
 
     /**
