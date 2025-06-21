@@ -75,13 +75,16 @@ public class GestorTiendaJuegos {
      * @return menu String que contiene el menú principal de la aplicación para imprimir.
      */
     public static String menuPrincipal(){
-        String menu = "### MENÚ PRINCIPAL ###\n\n" +
-                "1. Gestión de clientes\n" +
-                "2. Gestión de inventario\n" +
-                "3. Realizar venta\n" +
-                "4. Mostrar ventas\n" +
-                "5. Salir\n\n" +
-                "Elige una opción:";
+        String menu = """
+                ### MENÚ PRINCIPAL ###
+                
+                1. Gestión de clientes
+                2. Gestión de inventario
+                3. Realizar venta
+                4. Mostrar ventas
+                5. Salir
+                
+                Elige una opción:""";
         return menu;
     }
 

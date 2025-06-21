@@ -19,9 +19,7 @@ public class Juego {
     public String getGenero() {return this.genero;}
     public String getPegi() {return this.pegi;}
     public ArrayList<String> getConsolas() {
-        ArrayList<String> consolas = new ArrayList<>();
-        for (String consola : edicionJuego.keySet())
-            consolas.add(consola);
+        ArrayList<String> consolas = new ArrayList<>(edicionJuego.keySet());
         return consolas;
     }
     public double getPrecio(String consola) {
