@@ -12,11 +12,12 @@ public class GestorJuegos {
      */
     public static void switchJuegos(int opcion, ArrayList<Juego> catalogoJuegos) {
         Scanner sc = new Scanner(System.in);
+        String nombre;
 
         switch(opcion) {
             case 1:
                 System.out.println("Indica el nombre del juego que quieres añadir al catálogo:");
-                String nombre = sc.nextLine();
+                nombre = sc.nextLine();
                 if (!juegoExiste(nombre, catalogoJuegos)) {
                     System.out.println("¿Cuál es el género del juego?");
                     String genero = sc.nextLine();
@@ -24,12 +25,13 @@ public class GestorJuegos {
                     boolean activador = true;
                     while (activador) {
                         try {
-                            System.out.println("¿Cuál es la calificación PEGI del juego?\n" +
-                                    "1. PEGI-3\n" +
-                                    "2. PEGI-7\n" +
-                                    "3. PEGI-12\n" +
-                                    "4. PEGI-16\n" +
-                                    "5. PEGI-18");
+                            System.out.println("""
+                                    ¿Cuál es la calificación PEGI del juego?
+                                    1. PEGI-3
+                                    2. PEGI-7
+                                    3. PEGI-12
+                                    4. PEGI-16
+                                    5. PEGI-18""");
                             int opcionPegi = sc.nextInt();
                             sc.nextLine();
                             switch (opcionPegi) {
@@ -73,15 +75,16 @@ public class GestorJuegos {
                     do {
                         try {
                             numerosEdiciones.clear();
-                            System.out.println("¿Para qué sistemas está disponible? (Puedes elegir más de uno separando las opciones con guiones)\n" +
-                                    "1. XBOX\n" +
-                                    "2. Nintendo\n" +
-                                    "3. Play Station\n" +
-                                    "4. PC");
+                            System.out.println("""
+                                    ¿Para qué sistemas está disponible? (Puedes elegir más de uno separando las opciones con guiones)
+                                    1. XBOX
+                                    2. Nintendo
+                                    3. Play Station
+                                    4. PC""");
                             String ediciones = sc.nextLine();
                             String[] stringsEdiciones = ediciones.split("-");
-                            for (int i = 0; i < stringsEdiciones.length; i++) {
-                                int numero = Integer.parseInt(stringsEdiciones[i]);
+                            for (String stringsEdicion : stringsEdiciones) {
+                                int numero = Integer.parseInt(stringsEdicion);
                                 numerosEdiciones.add(numero);
                             }
                             Integer[] opcionesValidas = {1, 2, 3, 4};
@@ -116,7 +119,7 @@ public class GestorJuegos {
                                     sc.nextLine();
                                 }
                             } while (activador);
-                            activador = false;
+                            activador = true;
                             int stock = 0;
                             do {
                                 try {
@@ -147,7 +150,7 @@ public class GestorJuegos {
                                     sc.nextLine();
                                 }
                             } while (activador);
-                            activador = false;
+                            activador = true;
                             int stock = 0;
                             do {
                                 try {
@@ -178,7 +181,7 @@ public class GestorJuegos {
                                     sc.nextLine();
                                 }
                             } while (activador);
-                            activador = false;
+                            activador = true;
                             int stock = 0;
                             do {
                                 try {
@@ -209,7 +212,7 @@ public class GestorJuegos {
                                     sc.nextLine();
                                 }
                             } while (activador);
-                            activador = false;
+                            activador = true;
                             int stock = 0;
                             do {
                                 try {
@@ -261,15 +264,18 @@ public class GestorJuegos {
      * @return menu String que contiene el menú de Gestión de Inventario para imprimir.
      */
     public static String menuJuegos() {
-        String menu = "### GESTIÓN DE INVENTARIO ###\n\n" +
-                "1. Añadir juego al catálogo\n" +
-                "2. Eliminar juego del catálogo\n" +
-                "3. Modificar juego\n" +
-                "4. Buscar juego por consola\n" +
-                "5. Listado de juegos (Orden Alfabético)\n" +
-                "6. Listado de juegos (Orden por stock)\n" +
-                "7. Salir\n\n" +
-                "Elige una opción:";
+        String menu = """
+                ### GESTIÓN DE INVENTARIO ###
+                
+                1. Añadir juego al catálogo
+                2. Eliminar juego del catálogo
+                3. Modificar juego
+                4. Buscar juego por consola
+                5. Listado de juegos (Orden Alfabético)
+                6. Listado de juegos (Orden por stock)
+                7. Salir
+                
+                Elige una opción:""";
         return menu;
     }
 

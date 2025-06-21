@@ -52,10 +52,12 @@ public class GestorClientes {
                             while (activador) {
                                 try {
                                     System.out.println("Cliente " + c.getNombre());
-                                    System.out.println("¿Qué dato quieres modificar?\n" +
-                                            "1. Nombre\n" +
-                                            "2. Teléfono\n" +
-                                            "3. Correo electrónico\n");
+                                    System.out.println("""
+                                            ¿Qué dato quieres modificar?
+                                            1. Nombre
+                                            2. Teléfono
+                                            3. Correo electrónico
+                                            """);
                                     int opcionModificar = sc.nextInt();
                                     sc.nextLine();
                                     switch (opcionModificar) {
@@ -118,15 +120,18 @@ public class GestorClientes {
      * @return menu String que contiene el menú de Gestión de Clientes para imprimir.
      */
     public static String menuClientes() {
-        String menu = "### GESTIÓN DE CLIENTES ###\n\n" +
-                "1. Alta de cliente nuevo\n" +
-                "2. Baja de cliente existente\n" +
-                "3. Modificar datos de cliente\n" +
-                "4. Buscar cliente por DNI\n" +
-                "5. Listado de clientes (Orden Alfabético)\n" +
-                "6. Listado de clientes (Orden por importe de Ventas)\n" +
-                "7. Salir\n\n" +
-                "Elige una opción:";
+        String menu = """
+                ### GESTIÓN DE CLIENTES ###
+                
+                1. Alta de cliente nuevo
+                2. Baja de cliente existente
+                3. Modificar datos de cliente
+                4. Buscar cliente por DNI
+                5. Listado de clientes (Orden Alfabético)
+                6. Listado de clientes (Orden por importe de Ventas)
+                7. Salir
+                
+                Elige una opción:""";
         return menu;
     }
 
