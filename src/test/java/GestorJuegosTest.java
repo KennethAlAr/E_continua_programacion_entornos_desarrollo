@@ -75,6 +75,42 @@ class GestorJuegosTest {
     }
 
     @Test
+    public void listarPorConsola() {
+        String consola = "Nintendo";
+        assertEquals("Zelda - Aventura - PEGI-12 - 59,90€ - 100ud.\n", GestorJuegos.listarPorConsola(consola, catalogoJuegos));
+    }
+
+    @Test
+    public void listarPorConsolaSinJuegos() {
+        String consola = "Play Station";
+        assertEquals("No hay juegos disponibles para este sistema.", GestorJuegos.listarPorConsola(consola, catalogoJuegos));
+    }
+
+    @Test
+    public void listarJuegosAlfabetico() {
+        String  lista = "Zelda - Aventura - PEGI-12\nPC - 29,90€ - 200ud.\nNintendo - 59,90€ - 100ud.\n----------\n";
+        assertEquals(lista, GestorJuegos.listarJuegosAlfabetico(catalogoJuegos));
+    }
+
+    @Test
+    public void listarJuegosAlfabeticoSinJuegos() {
+        catalogoJuegos.clear();
+        assertEquals("No hay juegos en el catálogo.", GestorJuegos.listarJuegosAlfabetico(catalogoJuegos));
+    }
+
+    @Test
+    public void listarJuegosPorStock() {
+        String lista = "100ud - Zelda - Nintendo\n200ud - Zelda - PC\n";
+        assertEquals(lista, GestorJuegos.listarJuegosPorStock(catalogoJuegos));
+    }
+
+    @Test
+    public void listarJuegosPorStockSinJuegos() {
+        catalogoJuegos.clear();
+        assertEquals("No hay juegos en el catálogo.", GestorJuegos.listarJuegosAlfabetico(catalogoJuegos));
+    }
+
+    @Test
     public void juegoExiste() {
         String nombre = "Zelda";
         assertTrue(GestorJuegos.juegoExiste(nombre, catalogoJuegos));

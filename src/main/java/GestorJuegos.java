@@ -1,4 +1,9 @@
-import java.util.*;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.InputMismatchException;
+import java.util.Collections;
+import java.util.NoSuchElementException;
 
 public class GestorJuegos {
 
@@ -825,7 +830,7 @@ public class GestorJuegos {
         int numeroConsolas = 0;
         for (Juego j : catalogoJuegos) {
             if (j.getConsolas().contains(consola)) {
-                listado += j.getNombre() + " - " + j.getGenero() + " - " + j.getPegi() + " - " + j.getPrecio(consola) + "€ - " + j.getStock(consola) + "ud.\n";
+                listado += j.getNombre() + " - " + j.getGenero() + " - " + j.getPegi() + " - " + String.format("%.2f", j.getPrecio(consola)) + "€ - " + j.getStock(consola) + "ud.\n";
                 numeroConsolas ++;
             }
         }
