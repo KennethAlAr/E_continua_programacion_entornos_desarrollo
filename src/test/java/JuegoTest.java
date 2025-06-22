@@ -1,15 +1,10 @@
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JuegoTest {
 
@@ -68,6 +63,73 @@ class JuegoTest {
         assertEquals(consolas, juego.getConsolas());
     }
 
+    @Test
+    public void getPrecio() {
+        String consola = "Nintendo";
+        assertEquals(59.90 ,juego.getPrecio(consola));
+    }
 
+    @Test
+    public void getStock() {
+        String consola = "Nintendo";
+        assertEquals(10, juego.getStock(consola));
+    }
+
+    @Test
+    public void getSistemas() {
+        String sistemas = "PC - 39,90€ - 20ud.\nNintendo - 59,90€ - 10ud.\n";
+        assertEquals(sistemas, juego.getSistemas());
+    }
+
+    @Test
+    public void getSistemasSinSistemas() {
+        String sistemas = "Este juego no tiene sistemas disponibles.";
+        juego.eliminarEdicion("Nintendo");
+        juego.eliminarEdicion("PC");
+        assertEquals(sistemas, juego.getSistemas());
+    }
+
+    @Test
+    public void getNumeroSistemas() {
+        int numero = 2;
+        assertEquals(numero, juego.getNumeroSistemas());
+    }
+
+    @Test
+    public void anadirEdicion () {
+        String consola = "XBOX";
+        EdicionJuego edicionJuego = new EdicionJuego(consola, 49.90, 30);
+        juego.anadirEdicion(consola, edicionJuego);
+        String sistemas = "PC - 39,90€ - 20ud.\nNintendo - 59,90€ - 10ud.\nXBOX - 49,90€ - 30ud.\n";
+        assertEquals(3, juego.getNumeroSistemas());
+        assertEquals(sistemas, juego.getSistemas());
+    }
+
+    @Test
+    public void eliminarEdicion() {
+        String consola = "Nintendo";
+        juego.eliminarEdicion(consola);
+        String sistemas = "PC - 39,90€ - 20ud.\n";
+        assertEquals(1, juego.getNumeroSistemas());
+        assertEquals(sistemas, juego.getSistemas());
+    }
+
+    @Test
+    public void modificarNombre() {
+        String nuevoNombre = "The Legend of Zelda";
+        assertEquals("Nombre modificado a 'The Legend of Zelda'.", juego.modificarNombre(nuevoNombre));
+    }
+
+    @Test
+    public void modificarGenero() {
+        String nuevoGenero = "Acción/Aventura";
+        assertEquals("Género modificado a 'Acción/Aventura'.", juego.modificarGenero(nuevoGenero));
+    }
+
+    @Test
+    public void modificarPegi() {
+        String nuevoPegi = "PEGI-3";
+        assertEquals("Calificación PEGI modificada a 'PEGI-3'.", juego.modificarPegi(nuevoPegi));
+    }
 
 }
