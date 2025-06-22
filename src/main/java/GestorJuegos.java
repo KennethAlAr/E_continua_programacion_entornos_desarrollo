@@ -1,8 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class GestorJuegos {
 
@@ -232,7 +228,7 @@ public class GestorJuegos {
                         }
                     }
                     System.out.println("Juego '" + catalogoJuegos.getLast().getNombre() + "' (" + catalogoJuegos.getLast().getGenero() + ", " + catalogoJuegos.getLast().getPegi() + ") añadido en catálogo para las siguientes consolas:");
-                    catalogoJuegos.getLast().getSistemas();
+                    System.out.println(catalogoJuegos.getLast().getSistemas());
                 } else {
                     System.out.println("El juego " + nombre + " ya existe en la base de datos.");
                 }
@@ -754,8 +750,10 @@ public class GestorJuegos {
                 }
                 break;
             case 5:
+                System.out.println(listarJuegosAlfabetico(catalogoJuegos));
                 break;
             case 6:
+                System.out.println(listarJuegosPorStock(catalogoJuegos));
                 break;
             case 7:
                 System.out.println("Saliendo del sistema de gestión de inventario.\n");
@@ -833,6 +831,78 @@ public class GestorJuegos {
         }
         if (numeroConsolas == 0) {
             listado += "No hay juegos disponibles para este sistema.";
+        }
+        return listado;
+    }
+
+    /**
+     * Función para listar todos los juegos del catálogo junto a sus atributos en orden alfabético.
+     * @param catalogoJuegos Catálogo de juegos que se quiere listar.
+     * @return Lista de todos los juegos junto a sus atributos en orden alfabético o, en caso de no haber ningún juego, mensaje de error.
+     */
+    public static String listarJuegosAlfabetico(ArrayList<Juego> catalogoJuegos) {
+        String listado = "";
+        ArrayList<String> nombreJuegos = new ArrayList<>();
+        int numeroJuegos = 0;
+        for (Juego j : catalogoJuegos) {
+            nombreJuegos.add(j.getNombre());
+        }
+        Collections.sort(nombreJuegos);
+        for (String nombre : nombreJuegos) {
+            for (Juego j : catalogoJuegos) {
+                if (j.getNombre().equals(nombre)) {
+                    numeroJuegos ++;
+                    listado += j.getNombre() + " - " + j.getGenero() + " - " + j.getPegi() + "\n";
+                    if (j.getNumeroSistemas() > 0) {
+                        listado += j.getSistemas();
+                    }
+                    listado += "----------\n";
+                }
+            }
+        }
+        if (numeroJuegos == 0) {
+            listado += "No hay juegos en el catálogo.";
+        }
+        return listado;
+    }
+
+    /**
+     * Método para listar todos los juegos de un catálogo de juegos según su stock por sistema.
+     * @param catalogoJuegos Catálogo de juegos que se quiere listar.
+     * @return Lista de todos los juegos en orden ascendente por stock por sistema o, en caso de no haber ningún juego, mensaje de error.
+     */
+    public static String listarJuegosPorStock(ArrayList<Juego> catalogoJuegos) {
+        String listado = "";
+        ArrayList<String> stockJuegos = new ArrayList<>();
+        int numeroJuegos = 0;
+        for (Juego j : catalogoJuegos) {
+            for (EdicionJuego edicion : j.getEdicionJuego().values()) {
+                String codigo = edicion.getStock() + " -:- " + j.getNombre() + " -:- " + edicion.getConsola();
+                stockJuegos.add(codigo);
+            }
+        }
+        for (int i = 0; i < stockJuegos.size() - 1; i++) {
+            for (int j = i+1; j < stockJuegos.size(); j++) {
+                int precio1 = Integer.parseInt(stockJuegos.get(i).split(" -:- ")[0]);
+                int precio2 = Integer.parseInt(stockJuegos.get(j).split(" -:- ")[0]);
+
+                if (precio1 > precio2) {
+                    String auxiliar = stockJuegos.get(i);
+                    stockJuegos.set(i, stockJuegos.get(j));
+                    stockJuegos.set(j, auxiliar);
+                }
+            }
+        }
+        for (String juego : stockJuegos) {
+            String nombre = juego.split(" -:- ")[1];
+            String consola = juego.split(" -:- ")[2];
+            listado += seleccionarJuego(nombre, catalogoJuegos).getStock(consola) + "ud - " +
+                    seleccionarJuego(nombre, catalogoJuegos).getNombre() + " - " +
+                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(consola).getConsola() + "\n";
+            numeroJuegos ++;
+        }
+        if (numeroJuegos == 0) {
+            listado += "No hay juegos en el catálogo.";
         }
         return listado;
     }
