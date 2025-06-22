@@ -104,7 +104,7 @@ public class GestorClientes {
                 System.out.println(listarAlfabetico(listaClientes));
                 break;
             case 6:
-                listarPorVentas(listaClientes);
+                System.out.println(listarPorVentas(listaClientes));
                 break;
             case 7:
                 System.out.println("Saliendo del sistema de gestión de clientes.\n");

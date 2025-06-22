@@ -14,6 +14,7 @@ public class GestorJuegos {
     public static void switchJuegos(int opcion, ArrayList<Juego> catalogoJuegos) {
         Scanner sc = new Scanner(System.in);
         String nombre;
+        boolean activador;
 
         switch(opcion) {
             case 1:
@@ -23,7 +24,7 @@ public class GestorJuegos {
                     System.out.println("¿Cuál es el género del juego?");
                     String genero = sc.nextLine();
                     String pegi = "";
-                    boolean activador = true;
+                    activador = true;
                     while (activador) {
                         try {
                             System.out.println("""
@@ -231,9 +232,7 @@ public class GestorJuegos {
                         }
                     }
                     System.out.println("Juego '" + catalogoJuegos.getLast().getNombre() + "' (" + catalogoJuegos.getLast().getGenero() + ", " + catalogoJuegos.getLast().getPegi() + ") añadido en catálogo para las siguientes consolas:");
-                    for (String consola : catalogoJuegos.getLast().getConsolas()) {
-                        System.out.println(consola + " - " + String.format("%.2f", catalogoJuegos.getLast().getPrecio(consola)) + "€ - " + (catalogoJuegos.getLast().getStock(consola)) + "ud.");
-                    }
+                    catalogoJuegos.getLast().getSistemas();
                 } else {
                     System.out.println("El juego " + nombre + " ya existe en la base de datos.");
                 }
@@ -246,7 +245,7 @@ public class GestorJuegos {
             case 3:
                 System.out.println("¿Qué juego quieres modificar?");
                 nombre = sc.nextLine();
-                boolean activador = true;
+                activador = true;
                 if (juegoExiste(nombre, catalogoJuegos)) {
                     int opcionModificar = 0;
                     do {
@@ -274,9 +273,17 @@ public class GestorJuegos {
                     } while (activador);
                     switch(opcionModificar) {
                         case 1:
-                            System.out.println("Modificando el nombre del juego:\n¿Cuál es el nuevo nombre de '" + nombre + "'?");
-                            String nuevoNombre = sc.nextLine();
-                            System.out.println(seleccionarJuego(nombre, catalogoJuegos).modificarNombre(nuevoNombre));
+                            activador = true;
+                            do {
+                                System.out.println("Modificando el nombre del juego:\n¿Cuál es el nuevo nombre de '" + nombre + "'?");
+                                String nuevoNombre = sc.nextLine();
+                                if (!juegoExiste(nuevoNombre, catalogoJuegos)) {
+                                    System.out.println(seleccionarJuego(nombre, catalogoJuegos).modificarNombre(nuevoNombre));
+                                    activador = false;
+                                } else {
+                                    System.out.println("Ya existe un juego con ese nombre en el catálogo, por favor, elige otro.");
+                                }
+                            } while (activador);
                             break;
                         case 2:
                             System.out.println("Modificando el género del juego:\n¿Cuál es el nuevo género de '" + nombre + "'?");
@@ -707,6 +714,44 @@ public class GestorJuegos {
                 }
                 break;
             case 4:
+                activador = true;
+                int opcionListar = 0;
+                do {
+                    try {
+                        System.out.println("""
+                                Buscando juego por consola:
+                                ¿Qué consola quieres listar?
+                                1. XBOX
+                                2. Nintendo
+                                3. Play Station
+                                4. PC
+                                """);
+                        opcionListar = sc.nextInt();
+                        sc.nextLine();
+                        if (opcionListar > 0 && opcionListar < 5) {
+                            activador = false;
+                        } else {
+                            System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                        sc.nextLine();
+                    }
+                } while (activador);
+                switch (opcionListar) {
+                    case 1:
+                        System.out.println(listarPorConsola("XBOX", catalogoJuegos));
+                        break;
+                    case 2:
+                        System.out.println(listarPorConsola("Nintendo", catalogoJuegos));
+                        break;
+                    case 3:
+                        System.out.println(listarPorConsola("Play Station", catalogoJuegos));
+                        break;
+                    case 4:
+                        System.out.println(listarPorConsola("PC", catalogoJuegos));
+                        break;
+                }
                 break;
             case 5:
                 break;
@@ -718,6 +763,7 @@ public class GestorJuegos {
             default:
                 System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
         }
+
     }
 
     /**
@@ -768,6 +814,27 @@ public class GestorJuegos {
             }
         }
         return "El juego '" + nombre + "' no se encuentra en el catálogo de juegos.";
+    }
+
+    /**
+     * Función para obtener un String con el listado de todos los juegos de una consola.
+     * @param consola Nombre de la consola de la cual se quieren obtener los juegos disponibles.
+     * @param catalogoJuegos Catálogo de donde se quieren consultar los juegos disponibles para la consola.
+     * @return String con el listado de todos los juegos disponibles para la consola o, en caso de no tener ningún juego, mensaje de error.
+     */
+    public static String listarPorConsola(String consola, ArrayList<Juego> catalogoJuegos) {
+        String listado = "";
+        int numeroConsolas = 0;
+        for (Juego j : catalogoJuegos) {
+            if (j.getConsolas().contains(consola)) {
+                listado += j.getNombre() + " - " + j.getGenero() + " - " + j.getPegi() + " - " + j.getPrecio(consola) + "€ - " + j.getStock(consola) + "ud.\n";
+                numeroConsolas ++;
+            }
+        }
+        if (numeroConsolas == 0) {
+            listado += "No hay juegos disponibles para este sistema.";
+        }
+        return listado;
     }
 
     /**
