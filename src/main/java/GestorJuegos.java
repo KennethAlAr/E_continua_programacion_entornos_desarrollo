@@ -231,9 +231,7 @@ public class GestorJuegos {
                         }
                     }
                     System.out.println("Juego '" + catalogoJuegos.getLast().getNombre() + "' (" + catalogoJuegos.getLast().getGenero() + ", " + catalogoJuegos.getLast().getPegi() + ") añadido en catálogo para las siguientes consolas:");
-                    for (String consola : catalogoJuegos.getLast().getConsolas()) {
-                        System.out.println(consola + " - " + String.format("%.2f", catalogoJuegos.getLast().getPrecio(consola)) + "€ - " + (catalogoJuegos.getLast().getStock(consola)) + "ud.");
-                    }
+                    System.out.println(catalogoJuegos.getLast().getSistemas());
                 } else {
                     System.out.println("El juego " + nombre + " ya existe en la base de datos.");
                 }
