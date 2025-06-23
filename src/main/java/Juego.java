@@ -67,6 +67,36 @@ public class Juego {
         return sistemas;
     }
 
+    /**
+     * Método que devuelve un ArrayList con los sistemas disponibles que tienen stock.
+     * @return Lista de EdicionJuego con los sistemas disponibles que tienen stock.
+     */
+    public ArrayList<EdicionJuego> getSistemasConStock() {
+        ArrayList<EdicionJuego> sistemasConStock = new ArrayList<>();
+        for (EdicionJuego edicionJuego : edicionJuego.values()) {
+            if(edicionJuego.getStock() > 0) {
+                sistemasConStock.add(edicionJuego);
+            }
+        }
+        return sistemasConStock;
+    }
+
+    /**
+     * Método para saber si un juego tiene stock en cualquier sistema.
+     * @return True si tiene stock o false si no tiene.
+     */
+    public boolean tieneStock() {
+        int stock = 0;
+        for (EdicionJuego edicionJuego : edicionJuego.values()) {
+            stock += edicionJuego.getStock();
+        }
+        if (stock == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     //Setters
 
     /**

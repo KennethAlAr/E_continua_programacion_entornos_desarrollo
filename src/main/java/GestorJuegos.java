@@ -448,7 +448,7 @@ public class GestorJuegos {
                                                                 sc.nextLine();
                                                                 if (stock >= 0) {
                                                                     seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
-                                                                    System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "€.");
+                                                                    System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "ud.");
                                                                     activador = false;
                                                                 } else {
                                                                     System.out.println("El stock no puede ser negativo.");
@@ -659,7 +659,7 @@ public class GestorJuegos {
                                                                 sc.nextLine();
                                                                 if (stock >= 0) {
                                                                     seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
-                                                                    System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "€.");
+                                                                    System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "ud.");
                                                                     activador = false;
                                                                 } else {
                                                                     System.out.println("El stock no puede ser negativo.");

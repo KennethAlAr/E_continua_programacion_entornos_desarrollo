@@ -31,4 +31,9 @@ public class EdicionJuego {
      */
     public void modificarStock(int nuevoStock) {this.stock = nuevoStock;}
 
+    /**
+     * Método para reducir el stock de un juego en un sistema en 1.
+     */
+    public void reducirStock() {this.stock -= 1;}
+
 }

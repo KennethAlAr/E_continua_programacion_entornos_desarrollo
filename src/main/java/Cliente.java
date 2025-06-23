@@ -18,11 +18,11 @@ public class Cliente {
     }
 
     //Getters
-    public String getNombre() {return nombre;}
-    public String getDni() {return dni;}
-    public String getTelefono() {return telefono;}
+    public String getNombre() {return this.nombre;}
+    public String getDni() {return this.dni;}
+    public String getTelefono() {return this.telefono;}
     public String getEmail() {return email;}
-    public double getImporteVentas() {return importeVentas;}
+    public double getImporteVentas() {return this.importeVentas;}
 
     //Setters
     /**

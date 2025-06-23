@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.NoSuchElementException;
 
 public class GestorClientes {
 
@@ -268,6 +269,22 @@ public class GestorClientes {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Método para seleccionar un cliente de una lista de clientes por su DNI.
+     * @param dni DNI del cliente que se quiere seleccionar.
+     * @param listaCliente Lista de donde se quiere seleccionar al cliente.
+     * @return Cliente seleccionado.
+     * @throws NoSuchElementException Si no hay ningún cliente en la lista que coincida con el dni.
+     */
+    public static Cliente seleccionarCliente(String dni, ArrayList<Cliente> listaCliente) {
+        for (Cliente c : listaCliente) {
+            if (dni.equals(c.getDni())) {
+                return c;
+            }
+        }
+        throw new NoSuchElementException ("No hay ningún cliente con el dni " + dni + " en la base de datos.");
     }
 
 }

@@ -14,6 +14,7 @@ public class GestorTiendaJuegos {
         int opcion = 0;
         ArrayList<Cliente> listaClientes = new ArrayList<>();
         ArrayList<Juego> catalogoJuegos = new ArrayList<>();
+        ArrayList<Venta> historialVentas = new ArrayList<>();
         configuracionInicial(catalogoJuegos, listaClientes);
 
         do {
@@ -51,7 +52,7 @@ public class GestorTiendaJuegos {
                         } while (opcionCliente != 7);
                         break;
                     case 3:
-                        System.out.println("Opción 3\n");
+                        GestorVentas.sistemaVentas(historialVentas, listaClientes, catalogoJuegos);
                         break;
                     case 4:
                         System.out.println("Opción 4\n");
