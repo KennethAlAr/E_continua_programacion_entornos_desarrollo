@@ -116,7 +116,11 @@ public class GestorJuegos {
                                     System.out.println("¿Qué precio tiene el juego '" + nombre + "' en Xbox?");
                                     precio = sc.nextDouble();
                                     sc.nextLine();
-                                    activador = false;
+                                    if (precio >= 0f) {
+                                        activador = false;
+                                    } else {
+                                        System.out.println("El precio no puede ser negativo.");
+                                    }
                                 } catch (InputMismatchException e) {
                                     System.out.println("Importe no válido, por favor, ingresa un importe válido.");
                                     sc.nextLine();
@@ -129,7 +133,11 @@ public class GestorJuegos {
                                     System.out.println("¿Cuantás unidades del juego '" + nombre + "' en Xbox quieres añadir al stock?");
                                     stock = sc.nextInt();
                                     sc.nextLine();
-                                    activador = false;
+                                    if (stock >= 0) {
+                                        activador = false;
+                                    } else {
+                                        System.out.println("El stock no puede ser negativo.");
+                                    }
                                 } catch (InputMismatchException e) {
                                     System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
                                     sc.nextLine();
@@ -147,7 +155,11 @@ public class GestorJuegos {
                                     System.out.println("¿Qué precio tiene el juego '" + nombre + "' en Nintendo?");
                                     precio = sc.nextDouble();
                                     sc.nextLine();
-                                    activador = false;
+                                    if (precio >= 0f) {
+                                        activador = false;
+                                    } else {
+                                        System.out.println("El precio no puede ser negativo.");
+                                    }
                                 } catch (InputMismatchException e) {
                                     System.out.println("Importe no válido, por favor, ingresa un importe válido.");
                                     sc.nextLine();
@@ -160,7 +172,11 @@ public class GestorJuegos {
                                     System.out.println("¿Cuantás unidades del juego '" + nombre + "' en Nintendo quieres añadir al stock?");
                                     stock = sc.nextInt();
                                     sc.nextLine();
-                                    activador = false;
+                                    if (stock >= 0) {
+                                        activador = false;
+                                    } else {
+                                        System.out.println("El stock no puede ser negativo.");
+                                    }
                                 } catch (InputMismatchException e) {
                                     System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
                                     sc.nextLine();
@@ -178,7 +194,11 @@ public class GestorJuegos {
                                     System.out.println("¿Qué precio tiene el juego '" + nombre + "' en Play Station?");
                                     precio = sc.nextDouble();
                                     sc.nextLine();
-                                    activador = false;
+                                    if (precio >= 0f) {
+                                        activador = false;
+                                    } else {
+                                        System.out.println("El precio no puede ser negativo.");
+                                    }
                                 } catch (InputMismatchException e) {
                                     System.out.println("Importe no válido, por favor, ingresa un importe válido.");
                                     sc.nextLine();
@@ -191,7 +211,11 @@ public class GestorJuegos {
                                     System.out.println("¿Cuantás unidades del juego '" + nombre + "' en Play Station quieres añadir al stock?");
                                     stock = sc.nextInt();
                                     sc.nextLine();
-                                    activador = false;
+                                    if (stock >= 0) {
+                                        activador = false;
+                                    } else {
+                                        System.out.println("El stock no puede ser negativo.");
+                                    }
                                 } catch (InputMismatchException e) {
                                     System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
                                     sc.nextLine();
@@ -209,7 +233,11 @@ public class GestorJuegos {
                                     System.out.println("¿Qué precio tiene el juego '" + nombre + "' en PC?");
                                     precio = sc.nextDouble();
                                     sc.nextLine();
-                                    activador = false;
+                                    if (precio >= 0f) {
+                                        activador = false;
+                                    } else {
+                                        System.out.println("El precio no puede ser negativo.");
+                                    }
                                 } catch (InputMismatchException e) {
                                     System.out.println("Importe no válido, por favor, ingresa un importe válido.");
                                     sc.nextLine();
@@ -222,7 +250,11 @@ public class GestorJuegos {
                                     System.out.println("¿Cuantás unidades del juego '" + nombre + "' en PC quieres añadir al stock?");
                                     stock = sc.nextInt();
                                     sc.nextLine();
-                                    activador = false;
+                                    if (stock >= 0) {
+                                        activador = false;
+                                    } else {
+                                        System.out.println("El stock no puede ser negativo.");
+                                    }
                                 } catch (InputMismatchException e) {
                                     System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
                                     sc.nextLine();
@@ -393,9 +425,13 @@ public class GestorJuegos {
                                                                 System.out.println("¿Cuál es el precio nuevo?");
                                                                 double precio = sc.nextDouble();
                                                                 sc.nextLine();
-                                                                seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarPrecio(precio);
-                                                                System.out.println("Precio de '" + nombre + "' en " + sistemaModificar + " actualizado a " + precio + "€.");
-                                                                activador = false;
+                                                                if (precio >= 0f) {
+                                                                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarPrecio(precio);
+                                                                    System.out.println("Precio de '" + nombre + "' en " + sistemaModificar + " actualizado a " + precio + "€.");
+                                                                    activador = false;
+                                                                } else {
+                                                                    System.out.println("El precio no puede ser negativo.");
+                                                                }
                                                             } catch (InputMismatchException e) {
                                                                 System.out.println("Precio no válido, por favor, introduce un precio válido.\n");
                                                                 sc.nextLine();
@@ -410,9 +446,13 @@ public class GestorJuegos {
                                                                 System.out.println("¿Cuál es el nuevo stock?");
                                                                 int stock = sc.nextInt();
                                                                 sc.nextLine();
-                                                                seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
-                                                                System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "€.");
-                                                                activador = false;
+                                                                if (stock >= 0) {
+                                                                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
+                                                                    System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "€.");
+                                                                    activador = false;
+                                                                } else {
+                                                                    System.out.println("El stock no puede ser negativo.");
+                                                                }
                                                             } catch (InputMismatchException e) {
                                                                 System.out.println("Stock no válido, por favor, introduce un stock válido.\n");
                                                                 sc.nextLine();
@@ -500,7 +540,11 @@ public class GestorJuegos {
                                                         System.out.println("¿Qué precio tiene el juego '" + nombre + "' en " + consola +"?");
                                                         precio = sc.nextDouble();
                                                         sc.nextLine();
-                                                        activadorPrecio = false;
+                                                        if (precio >= 0f) {
+                                                            activadorPrecio = false;
+                                                        } else {
+                                                            System.out.println("El precio no puede ser negativo.");
+                                                        }
                                                     } catch (InputMismatchException e) {
                                                         System.out.println("Importe no válido, por favor, ingresa un importe válido.");
                                                         sc.nextLine();
@@ -513,7 +557,11 @@ public class GestorJuegos {
                                                         System.out.println("¿Cuantás unidades del juego '" + nombre + "' en " + consola + " quieres añadir al stock?");
                                                         stock = sc.nextInt();
                                                         sc.nextLine();
-                                                        activadorStock = false;
+                                                        if (stock >= 0) {
+                                                            activadorStock = false;
+                                                        } else {
+                                                            System.out.println("El stock no puede ser negativo.");
+                                                        }
                                                     } catch (InputMismatchException e) {
                                                         System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
                                                         sc.nextLine();
@@ -588,9 +636,13 @@ public class GestorJuegos {
                                                                 System.out.println("¿Cuál es el precio nuevo?");
                                                                 double precio = sc.nextDouble();
                                                                 sc.nextLine();
-                                                                seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarPrecio(precio);
-                                                                System.out.println("Precio de '" + nombre + "' en " + sistemaModificar + " actualizado a " + precio + "€.");
-                                                                activador = false;
+                                                                if (precio >= 0f) {
+                                                                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarPrecio(precio);
+                                                                    System.out.println("Precio de '" + nombre + "' en " + sistemaModificar + " actualizado a " + precio + "€.");
+                                                                    activador = false;
+                                                                } else {
+                                                                    System.out.println("El precio no puede ser negativo.");
+                                                                }
                                                             } catch (InputMismatchException e) {
                                                                 System.out.println("Precio no válido, por favor, introduce un precio válido.\n");
                                                                 sc.nextLine();
@@ -605,9 +657,13 @@ public class GestorJuegos {
                                                                 System.out.println("¿Cuál es el nuevo stock?");
                                                                 int stock = sc.nextInt();
                                                                 sc.nextLine();
-                                                                seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
-                                                                System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "€.");
-                                                                activador = false;
+                                                                if (stock >= 0) {
+                                                                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
+                                                                    System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "€.");
+                                                                    activador = false;
+                                                                } else {
+                                                                    System.out.println("El stock no puede ser negativo.");
+                                                                }
                                                             } catch (InputMismatchException e) {
                                                                 System.out.println("Stock no válido, por favor, introduce un stock válido.\n");
                                                                 sc.nextLine();
@@ -675,7 +731,11 @@ public class GestorJuegos {
                                                         System.out.println("¿Qué precio tiene el juego '" + nombre + "' en " + consola +"?");
                                                         precio = sc.nextDouble();
                                                         sc.nextLine();
-                                                        activadorPrecio = false;
+                                                        if (precio >= 0f) {
+                                                            activadorPrecio = false;
+                                                        } else {
+                                                            System.out.println("El precio no puede ser negativo.");
+                                                        }
                                                     } catch (InputMismatchException e) {
                                                         System.out.println("Importe no válido, por favor, ingresa un importe válido.");
                                                         sc.nextLine();
@@ -688,7 +748,11 @@ public class GestorJuegos {
                                                         System.out.println("¿Cuantás unidades del juego '" + nombre + "' en " + consola + " quieres añadir al stock?");
                                                         stock = sc.nextInt();
                                                         sc.nextLine();
-                                                        activadorStock = false;
+                                                        if (stock >= 0) {
+                                                            activadorStock = false;
+                                                        } else {
+                                                            System.out.println("El stock no puede ser negativo.");
+                                                        }
                                                     } catch (InputMismatchException e) {
                                                         System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
                                                         sc.nextLine();
