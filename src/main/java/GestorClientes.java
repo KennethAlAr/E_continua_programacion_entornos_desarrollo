@@ -7,112 +7,47 @@ import java.util.NoSuchElementException;
 public class GestorClientes {
 
     /**
-     * Función para manejar las opciones del menú de Gestión de Clientes.
-     * @param opcion Opción escogida para el menú.
+     * Función para manejar las opciones del menú principal de Gestión de Clientes.
      * @param listaClientes Lista de los clientes para poder gestionarlos.
+     * @param sc Scanner para introducir datos.
      */
-    public static void switchClientes(int opcion, ArrayList<Cliente> listaClientes) {
-        Scanner sc = new Scanner(System.in);
-        String dni;
-
-        switch (opcion) {
-            case 1:
-                do {
-                    System.out.println("Introduce el DNI del nuevo cliente:");
-                    dni = sc.nextLine().toUpperCase();
-                    if (!dniValido(dni)) {
-                        System.out.println("El DNI introducido no es válido, por favor, introduce un DNI válido.");
-                        System.out.println("Recuerda introducir los 8 números y la letra sin guión.");
-                    }
-                } while (!dniValido(dni));
-
-                if (!clienteExiste(dni, listaClientes)) {
-                    System.out.println("Introduce el nombre del cliente:");
-                    String nombre = sc.nextLine();
-                    System.out.println("Introduce su teléfono:");
-                    String telefono = sc.nextLine();
-                    System.out.println("Introduce su correo electrónico:");
-                    String email = sc.nextLine();
-                    System.out.println(altaCliente(nombre, dni, telefono, email, listaClientes));
-                } else {
-                    System.out.println("El cliente con DNI " + dni + " ya existe en la base de datos.\n");
-                }
-                break;
-            case 2:
-                System.out.println("Introduce el DNI del cliente que deseas dar de baja.");
-                dni = sc.nextLine().toUpperCase();
-                System.out.println(bajaCliente(dni, listaClientes));
-                break;
-            case 3:
-                System.out.println("Ingresa el DNI del cliente para modificar sus datos:");
-                dni = sc.nextLine().toUpperCase();
-                if (clienteExiste(dni, listaClientes)) {
-                    for (Cliente c : listaClientes) {
-                        if (dni.equals(c.getDni())) {
-                            boolean activador = true;
-                            while (activador) {
-                                try {
-                                    System.out.println("Cliente " + c.getNombre());
-                                    System.out.println("""
-                                            ¿Qué dato quieres modificar?
-                                            1. Nombre
-                                            2. Teléfono
-                                            3. Correo electrónico
-                                            """);
-                                    int opcionModificar = sc.nextInt();
-                                    sc.nextLine();
-                                    switch (opcionModificar) {
-                                        case 1:
-                                            System.out.println("Introduce el nuevo nombre:");
-                                            String nombre = sc.nextLine();
-                                            c.modificarNombre(nombre);
-                                            break;
-                                        case 2:
-                                            System.out.println("Introduce el nuevo teléfono:");
-                                            String telefono = sc.nextLine();
-                                            c.modificarTelefono(telefono);
-                                            break;
-                                        case 3:
-                                            System.out.println("Introduce el nuevo correo electrónico:");
-                                            String email = sc.nextLine();
-                                            c.modificarEmail(email);
-                                            break;
-                                        default:
-                                            System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
-                                    }
-                                    System.out.println("Escribe 'Si' si quieres modificar algún otro dato, sino escribe cualquier otra cosa.");
-                                    String opcionModificarMas = sc.nextLine();
-                                    if (!opcionModificarMas.equals("Si")) {
-                                        activador = false;
-                                    }
-                                } catch (InputMismatchException e) {
-                                    System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
-                                    sc.nextLine();
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    System.out.println("El DNI introducido no coincide con ningún cliente de la base de datos.");
-                }
-                break;
-            case 4:
-                System.out.println("Ingresa el DNI del cliente que quieres ver:");
-                dni = sc.nextLine().toUpperCase();
-                System.out.println(buscarPorDni(dni, listaClientes));
-                break;
-            case 5:
-                System.out.println(listarAlfabetico(listaClientes));
-                break;
-            case 6:
-                System.out.println(listarPorVentas(listaClientes));
-                break;
-            case 7:
-                System.out.println("Saliendo del sistema de gestión de clientes.\n");
-                break;
-            default:
+    public static void menuPrincipalClientes(ArrayList<Cliente> listaClientes, Scanner sc) {
+        int opcion = 0;
+        do {
+            try {
+                System.out.println(stringMenuPrincipalClientes());
+                opcion = sc.nextInt();
+                sc.nextLine();
+            } catch (InputMismatchException e) {
                 System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
-        }
+                sc.nextLine();
+            }
+            switch (opcion) {
+                case 1:
+                    menuAltaCliente(listaClientes, sc);
+                    break;
+                case 2:
+                    menuBajaCliente(listaClientes, sc);
+                    break;
+                case 3:
+                    menuModificarCliente(listaClientes, sc);
+                    break;
+                case 4:
+                    buscarPorDni(listaClientes, sc);
+                    break;
+                case 5:
+                    System.out.println(listarAlfabetico(listaClientes));
+                    break;
+                case 6:
+                    System.out.println(listarPorVentas(listaClientes));
+                    break;
+                case 7:
+                    System.out.println("Saliendo del sistema de gestión de clientes.\n");
+                    break;
+                default:
+                    System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+            }
+        }while(opcion != 7);
 
     }
 
@@ -120,7 +55,7 @@ public class GestorClientes {
      * Función para construir el menú de Gestión de Clientes.
      * @return menu String que contiene el menú de Gestión de Clientes para imprimir.
      */
-    public static String menuClientes() {
+    public static String stringMenuPrincipalClientes() {
         String menu = """
                 ### GESTIÓN DE CLIENTES ###
                 
@@ -134,6 +69,38 @@ public class GestorClientes {
                 
                 Elige una opción:""";
         return menu;
+    }
+
+    /**
+     * Función para gestionar el alta de los clientes nuevos.
+     * @param listaClientes Lista donde se va a dar de alta el nuevo cliente.
+     * @param sc Scanner para introducir datos.
+     */
+    public static void menuAltaCliente(ArrayList<Cliente> listaClientes, Scanner sc) {
+        String dni = "";
+        do {
+            System.out.println("Introduce el DNI del nuevo cliente:");
+            dni = sc.nextLine().toUpperCase();
+            if (!dniValido(dni)) {
+                System.out.println("El DNI introducido no es válido, por favor, introduce un DNI válido.");
+                System.out.println("Recuerda introducir los 8 números y la letra sin guión.");
+            }
+        } while (!dniValido(dni));
+        boolean interruptor = true;
+        do {
+            if (!clienteExiste(dni, listaClientes)) {
+                System.out.println("Introduce el nombre del cliente:");
+                String nombre = sc.nextLine();
+                System.out.println("Introduce su teléfono:");
+                String telefono = sc.nextLine();
+                System.out.println("Introduce su correo electrónico:");
+                String email = sc.nextLine();
+                System.out.println(altaCliente(nombre, dni, telefono, email, listaClientes));
+                interruptor = false;
+            } else {
+                System.out.println("El cliente con DNI " + dni + " ya existe en la base de datos.\n");
+            }
+        } while (interruptor);
     }
 
     /**
@@ -152,10 +119,34 @@ public class GestorClientes {
     }
 
     /**
+     * Función para gestionar la baja de clientes existentes.
+     * @param listaClientes Lista donde se va a dar de baja al cliente existente.
+     * @param sc Scanner para introducir datos.
+     */
+    public static void menuBajaCliente(ArrayList<Cliente> listaClientes, Scanner sc) {
+        boolean interruptor = true;
+        do {
+            try {
+                System.out.println("Introduce el DNI del cliente que deseas dar de baja o escribe 'salir' para salir.");
+                String dni = sc.nextLine().toUpperCase();
+                if (dni.equalsIgnoreCase("salir")) {
+                    interruptor = false;
+                } else {
+                    System.out.println(bajaCliente(dni, listaClientes));
+                    interruptor = false;
+                }
+            } catch (NoSuchElementException e) {
+                System.out.println(e.getMessage());
+            }
+        } while (interruptor);
+    }
+
+    /**
      * Función para dar de baja un cliente existente.
      * @param dni String con el dni del cliente existente.
      * @param listaClientes Lista de donde se eliminará el cliente existente.
-     * @return Mensaje de éxito en caso de eliminar el cliente o, en caso contrario, mensaje de error si el cliente no existe.
+     * @return Mensaje de éxito en caso de eliminar el cliente.
+     * @throws NoSuchElementException si el cliente no existe en la base de datos.
      */
     public static String bajaCliente(String dni, ArrayList<Cliente> listaClientes) {
         if (clienteExiste(dni, listaClientes)) {
@@ -166,29 +157,93 @@ public class GestorClientes {
                 }
             }
         }
-        return("El DNI introducido no coincide con ningún cliente de la base de datos.");
+        throw new NoSuchElementException("El DNI introducido no coincide con ningún cliente de la base de datos.");
+    }
+
+    /**
+     * Función para gestionar la modificación de datos de un cliente existente.
+     * @param listaClientes Lista donde se encuentra el cliente para modificar sus datos.
+     * @param sc Scanner para introducir datos.
+     */
+    public static void menuModificarCliente(ArrayList<Cliente> listaClientes, Scanner sc) {
+        boolean interruptor = true;
+        do {
+            System.out.println("Ingresa el DNI del cliente para modificar sus datos o escribe 'salir' para salir:");
+            String dni = sc.nextLine().toUpperCase();
+            if (dni.equalsIgnoreCase("salir")) {
+                interruptor = false;
+            } else if (clienteExiste(dni, listaClientes)) {
+                interruptor = true;
+                Cliente cliente = seleccionarCliente(dni, listaClientes);
+                do {
+                    try {
+                        System.out.println("Cliente " + cliente.getNombre());
+                        System.out.println("""
+                                ¿Qué dato quieres modificar?
+                                1. Nombre
+                                2. Teléfono
+                                3. Correo electrónico
+                                """);
+                        int opcionModificar = sc.nextInt();
+                        sc.nextLine();
+                        switch (opcionModificar) {
+                            case 1:
+                                System.out.println("Introduce el nuevo nombre:");
+                                String nombre = sc.nextLine();
+                                cliente.modificarNombre(nombre);
+                                break;
+                            case 2:
+                                System.out.println("Introduce el nuevo teléfono:");
+                                String telefono = sc.nextLine();
+                                cliente.modificarTelefono(telefono);
+                                break;
+                            case 3:
+                                System.out.println("Introduce el nuevo correo electrónico:");
+                                String email = sc.nextLine();
+                                cliente.modificarEmail(email);
+                                break;
+                            default:
+                                System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                        }
+                        System.out.println("Escribe 'Si' si quieres modificar algún otro dato, sino escribe cualquier otra cosa.");
+                        String opcionModificarMas = sc.nextLine();
+                        interruptor = !opcionModificarMas.equals("Si");
+                    } catch (InputMismatchException e) {
+                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                        sc.nextLine();
+                    }
+                } while(interruptor);
+            } else {
+                System.out.println("El DNI introducido no coincide con ningún cliente de la base de datos.");
+            }
+        } while (interruptor);
     }
 
     /**
      * Función para buscar un cliente en una lista de clientes por su DNI.
-     * @param dni String con el dni del cliente que queremos encontrar.
      * @param listaClientes Lista de clientes donde queremos encontrar al cliente por su DNI.
-     * @return Mensaje con la información del cliente encontrado o, en caso de no existir el DNI en la lista, mensaje de error.
+     * @param sc Scanner para introducir datos.
      */
-    public static String buscarPorDni(String dni, ArrayList<Cliente> listaClientes) {
-        if (clienteExiste(dni, listaClientes)) {
-            for (Cliente c : listaClientes) {
-                if (c.getDni().equals(dni)) {
-                    String cliente = ("\nCliente: " + c.getNombre() +
-                            "\nDNI: " + c.getDni() +
-                            "\nTeléfono: " + c.getTelefono() +
-                            "\nCorreo electrónico: " + c.getEmail() +
-                            "\nImporte total de ventas: " + String.format("%.2f", c.getImporteVentas())+ "€.");
-                    return cliente;
-                }
+    public static void buscarPorDni(ArrayList<Cliente> listaClientes, Scanner sc) {
+        System.out.println("Ingresa el DNI del cliente que quieres ver o escribe 'salir' para salir:");
+        String dni = sc.nextLine().toUpperCase();
+        boolean interruptor = true;
+        do {
+            if (dni.equalsIgnoreCase("salir")) {
+                interruptor = false;
+            } else if (clienteExiste(dni, listaClientes)) {
+                Cliente cliente = seleccionarCliente(dni, listaClientes);
+                String mensaje = ("\nCliente: " + cliente.getNombre() +
+                        "\nDNI: " + cliente.getDni() +
+                        "\nTeléfono: " + cliente.getTelefono() +
+                        "\nCorreo electrónico: " + cliente.getEmail() +
+                        "\nImporte total de ventas: " + String.format("%.2f", cliente.getImporteVentas()) + "€.");
+                System.out.println(mensaje);
+                interruptor = false;
+            } else {
+                System.out.println("El DNI introducido no coincide con ningún cliente de la base de datos.");
             }
-        }
-        return "El DNI introducido no coincide con ningún cliente de la base de datos.";
+        } while(interruptor);
     }
 
     /**

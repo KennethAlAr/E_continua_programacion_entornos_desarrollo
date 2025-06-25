@@ -38,7 +38,7 @@ class GestorClientesTest {
                 7. Salir
                 
                 Elige una opción:""";
-        assertEquals(menu, GestorClientes.menuClientes());
+        assertEquals(menu, GestorClientes.stringMenuPrincipalClientes());
     }
 
     @Test
