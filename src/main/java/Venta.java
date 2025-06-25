@@ -43,10 +43,10 @@ public class Venta {
                 "\nFecha de la venta: " + fecha + "\n";
         for (HashMap<Juego, EdicionJuego> articulo : articulosVenta) {
                 for (Juego juego : articulo.keySet()) {
-                    mensaje += juego.getNombre() + " - " + articulo.get(juego).getConsola() + " - " + articulo.get(juego).getPrecio() + "€.\n";
+                    mensaje += " - " + juego.getNombre() + " - " + articulo.get(juego).getConsola() + " - " + String.format("%.2f" , articulo.get(juego).getPrecio()) + "€\n";
             }
         }
-        mensaje += "Importe total: " + getImporteVenta();
+        mensaje += "Importe total: " + String.format("%.2f" , getImporteVenta()) + "€";
         return mensaje;
     }
 

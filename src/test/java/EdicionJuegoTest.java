@@ -48,4 +48,10 @@ class EdicionJuegoTest {
         assertEquals(nuevoStock, edicionJuego.getStock());
     }
 
+    @Test
+    public void reducirStock() {
+        edicionJuego.reducirStock();
+        assertEquals(9 ,edicionJuego.getStock());
+    }
+
 }

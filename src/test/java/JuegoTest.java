@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class JuegoTest {
 
@@ -130,6 +132,26 @@ class JuegoTest {
     public void modificarPegi() {
         String nuevoPegi = "PEGI-3";
         assertEquals("Calificación PEGI modificada a 'PEGI-3'.", juego.modificarPegi(nuevoPegi));
+    }
+
+    @Test
+    public void getSistemasConStock() {
+        edicion2.modificarStock(0);
+        ArrayList<EdicionJuego> sistemasConStock = new ArrayList<>();
+        sistemasConStock.add(edicion);
+        assertEquals(sistemasConStock, juego.getSistemasConStock());
+    }
+
+    @Test
+    public void tieneStock() {
+        assertTrue(juego.tieneStock());
+    }
+
+    @Test
+    public void noTieneStock() {
+        edicion.modificarStock(0);
+        edicion2.modificarStock(0);
+        assertFalse(juego.tieneStock());
     }
 
 }

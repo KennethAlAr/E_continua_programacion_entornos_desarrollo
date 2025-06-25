@@ -3,10 +3,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class GestorClientesTest {
 
@@ -141,6 +143,20 @@ class GestorClientesTest {
     public void dniLetraNoValida() {
         String dni = "12345678*";
         assertFalse(GestorClientes.dniValido(dni));
+    }
+
+    @Test
+    public void seleccionarCliente() {
+        String dni = "12345678A";
+        assertEquals(listaClientes.getLast() ,GestorClientes.seleccionarCliente(dni, listaClientes));
+    }
+
+    @Test
+    public void seleccionarClienteNoExiste() {
+        String dni = "87654321B";
+        assertThrows(NoSuchElementException.class, () -> {
+            GestorClientes.seleccionarCliente(dni, listaClientes);
+        });
     }
 
     @AfterEach
