@@ -48,7 +48,7 @@ class GestorJuegosTest {
                 7. Salir
                 
                 Elige una opción:""";
-        assertEquals(menu, GestorJuegos.menuJuegos());
+        assertEquals(menu, GestorJuegos.stringMenuPrincipalJuegos());
     }
 
     @Test

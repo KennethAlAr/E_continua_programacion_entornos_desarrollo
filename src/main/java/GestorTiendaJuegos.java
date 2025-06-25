@@ -22,24 +22,12 @@ public class GestorTiendaJuegos {
                 System.out.println(menuPrincipal());
                 opcion = sc.nextInt();
                 sc.nextLine();
-                int opcionCliente = 0;
-
                 switch (opcion) {
                     case 1:
                         GestorClientes.menuPrincipalClientes(listaClientes, sc);
                         break;
                     case 2:
-                        do {
-                            try {
-                                System.out.println(GestorJuegos.menuJuegos());
-                                opcionCliente = sc.nextInt();
-                                sc.nextLine();
-                                GestorJuegos.switchJuegos(opcionCliente, catalogoJuegos);
-                            } catch (InputMismatchException e) {
-                                System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
-                                sc.nextLine();
-                            }
-                        } while (opcionCliente != 7);
+                        GestorJuegos.menuPrincipalJuegos(catalogoJuegos, sc);
                         break;
                     case 3:
                         GestorVentas.sistemaVentas(historialVentas, listaClientes, catalogoJuegos);
