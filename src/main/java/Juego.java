@@ -1,34 +1,38 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 public class Juego {
 
     private String nombre;
     private String genero;
     private String pegi;
-    private HashMap<String, EdicionJuego> edicionJuego;
+    private ArrayList<EdicionJuego> listaEdicionJuego;
 
     //Constructor
     public Juego (String nombre, String genero, String pegi) {
         this.nombre = nombre;
         this.genero = genero;
         this.pegi = pegi;
-        this.edicionJuego = new HashMap<>();
+        this.listaEdicionJuego = new ArrayList<>();
     }
 
     //Getters
     public String getNombre() {return this.nombre;}
     public String getGenero() {return this.genero;}
     public String getPegi() {return this.pegi;}
-    public HashMap<String, EdicionJuego> getEdicionJuego() {return this.edicionJuego;}
-    public int getNumeroSistemas() {return edicionJuego.size();}
+    public ArrayList<EdicionJuego> getEdicionJuego() {return this.listaEdicionJuego;}
+    public int getNumeroSistemas() {return listaEdicionJuego.size();}
 
     /**
      * Método para obtener el nombre de todos los sistemas para los que está disponible un juego.
      * @return ArrayList de String con el nombre de todos los sistemas disponibles para el juego.
      */
     public ArrayList<String> getConsolas() {
-        ArrayList<String> consolas = new ArrayList<>(edicionJuego.keySet());
+        ArrayList<String> consolas = new ArrayList<>();
+        for (EdicionJuego edicion : listaEdicionJuego) {
+            consolas.add(edicion.getConsola());
+        }
         return consolas;
     }
 
@@ -38,7 +42,7 @@ public class Juego {
      * @return double con el precio del juego para el sistema.
      */
     public double getPrecio(String consola) {
-        double precio = this.edicionJuego.get(consola).getPrecio();
+        double precio = seleccionarEdicion(consola).getPrecio();
         return precio;
     }
 
@@ -48,7 +52,7 @@ public class Juego {
      * @return int con el número de unidades en stock del juego para el sistema.
      */
     public int getStock(String consola) {
-        int stock = this.edicionJuego.get(consola).getStock();
+        int stock = seleccionarEdicion(consola).getStock();
         return stock;
     }
 
@@ -58,8 +62,8 @@ public class Juego {
      */
     public String getSistemas() {
         String sistemas = "";
-        if (edicionJuego.size() > 0) {
-            for (EdicionJuego edicion : edicionJuego.values())
+        if (!listaEdicionJuego.isEmpty()) {
+            for (EdicionJuego edicion : listaEdicionJuego)
                 sistemas += edicion.getConsola() + " - " + String.format("%.2f", edicion.getPrecio()) + "€ - " + edicion.getStock() + "ud.\n";
         } else {
             return "Este juego no tiene sistemas disponibles.";
@@ -73,7 +77,7 @@ public class Juego {
      */
     public ArrayList<EdicionJuego> getSistemasConStock() {
         ArrayList<EdicionJuego> sistemasConStock = new ArrayList<>();
-        for (EdicionJuego edicionJuego : edicionJuego.values()) {
+        for (EdicionJuego edicionJuego : listaEdicionJuego) {
             if(edicionJuego.getStock() > 0) {
                 sistemasConStock.add(edicionJuego);
             }
@@ -87,25 +91,20 @@ public class Juego {
      */
     public boolean tieneStock() {
         int stock = 0;
-        for (EdicionJuego edicionJuego : edicionJuego.values()) {
+        for (EdicionJuego edicionJuego : listaEdicionJuego) {
             stock += edicionJuego.getStock();
         }
-        if (stock == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return (stock != 0);
     }
 
     //Setters
 
     /**
      * Método para añadir una edición de sistema a un juego.
-     * @param consola Nombre del sistema que se quiere añadir.
      * @param edicion EdicionJuego que se quiere añadir al juego.
      */
-    public void anadirEdicion (String consola, EdicionJuego edicion) {
-        this.edicionJuego.put(consola, edicion);
+    public void anadirEdicion (EdicionJuego edicion) {
+        this.listaEdicionJuego.add(edicion);
     }
 
     /**
@@ -113,7 +112,8 @@ public class Juego {
      * @param consola Nombre del sistema que se quiere eliminar.
      */
     public void eliminarEdicion(String consola) {
-        this.edicionJuego.remove(consola);
+        EdicionJuego edicionEliminar = seleccionarEdicion(consola);
+        this.listaEdicionJuego.remove(edicionEliminar);
     }
 
     /**
@@ -144,6 +144,34 @@ public class Juego {
     public String modificarPegi(String pegi) {
         this.pegi = pegi;
         return "Calificación PEGI modificada a '" + pegi + "'.";
+    }
+
+    /**
+     * Método para seleccionar una edición de juego según el nombre del sistema.
+     * @param consola nombre del sistema que se quiere seleccionar.
+     * @return EdicionJuego seleccionada según el nombre del sistema.
+     */
+    public EdicionJuego seleccionarEdicion(String consola) {
+        for (EdicionJuego edicion : listaEdicionJuego) {
+            if (edicion.getConsola().equals(consola)) {
+                return edicion;
+            }
+        }
+        throw new NoSuchElementException("No existe el juego para ese sistema en la base de datos.");
+    }
+
+    /**
+     * Método para saber si la lista de ediciones de juego contiene la consola solicitada.
+     * @param consola Nombre de la consola solicitada
+     * @return True en caso de existir y false en caso de no existir.
+     */
+    public boolean existeConsola(String consola) {
+        for (EdicionJuego edicion : listaEdicionJuego) {
+            if (edicion.getConsola().equals(consola)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -28,9 +28,9 @@ class GestorJuegosTest {
         int stock2 = 200;
         Juego juego = new Juego(nombre, genero, pegi);
         EdicionJuego edicion = new EdicionJuego(consola, precio, stock);
-        juego.anadirEdicion("Nintendo", edicion);
+        juego.anadirEdicion(edicion);
         EdicionJuego edicion2 = new EdicionJuego(consola2, precio2, stock2);
-        juego.anadirEdicion("PC", edicion2);
+        juego.anadirEdicion(edicion2);
         catalogoJuegos.add(juego);
     }
 

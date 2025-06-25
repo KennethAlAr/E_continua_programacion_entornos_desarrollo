@@ -24,12 +24,12 @@ class JuegoTest {
         double precio = 59.90;
         int stock = 10;
         edicion = new EdicionJuego(consola, precio, stock);
-        juego.anadirEdicion(consola, edicion);
+        juego.anadirEdicion(edicion);
         String consola2 = "PC";
         double precio2 = 39.90;
         int stock2 = 20;
         edicion2 = new EdicionJuego(consola2, precio2, stock2);
-        juego.anadirEdicion(consola2, edicion2);
+        juego.anadirEdicion(edicion2);
     }
 
     @Test
@@ -101,7 +101,7 @@ class JuegoTest {
     public void anadirEdicion () {
         String consola = "XBOX";
         EdicionJuego edicionJuego = new EdicionJuego(consola, 49.90, 30);
-        juego.anadirEdicion(consola, edicionJuego);
+        juego.anadirEdicion(edicionJuego);
         String sistemas = "PC - 39,90€ - 20ud.\nNintendo - 59,90€ - 10ud.\nXBOX - 49,90€ - 30ud.\n";
         assertEquals(3, juego.getNumeroSistemas());
         assertEquals(sistemas, juego.getSistemas());

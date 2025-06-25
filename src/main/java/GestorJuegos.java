@@ -144,7 +144,7 @@ public class GestorJuegos {
                                 }
                             } while (activador);
                             EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                            catalogoJuegos.getLast().anadirEdicion(consola, edicionJuego);
+                            catalogoJuegos.getLast().anadirEdicion(edicionJuego);
                         }
                         if (numero == 2) {
                             String consola = "Nintendo";
@@ -183,7 +183,7 @@ public class GestorJuegos {
                                 }
                             } while (activador);
                             EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                            catalogoJuegos.getLast().anadirEdicion(consola, edicionJuego);
+                            catalogoJuegos.getLast().anadirEdicion(edicionJuego);
                         }
                         if (numero == 3) {
                             String consola = "Play Station";
@@ -222,7 +222,7 @@ public class GestorJuegos {
                                 }
                             } while (activador);
                             EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                            catalogoJuegos.getLast().anadirEdicion(consola, edicionJuego);
+                            catalogoJuegos.getLast().anadirEdicion(edicionJuego);
                         }
                         if (numero == 4) {
                             String consola = "PC";
@@ -261,7 +261,7 @@ public class GestorJuegos {
                                 }
                             } while (activador);
                             EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                            catalogoJuegos.getLast().anadirEdicion(consola, edicionJuego);
+                            catalogoJuegos.getLast().anadirEdicion(edicionJuego);
                         }
                     }
                     System.out.println("Juego '" + catalogoJuegos.getLast().getNombre() + "' (" + catalogoJuegos.getLast().getGenero() + ", " + catalogoJuegos.getLast().getPegi() + ") añadido en catálogo para las siguientes consolas:");
@@ -363,14 +363,14 @@ public class GestorJuegos {
                             System.out.println(seleccionarJuego(nombre, catalogoJuegos).modificarPegi(nuevoPegi));
                             break;
                         case 4:
-                            System.out.println("El juego " + nombre + " está disponible en los siguientes sistemas:");
-                            System.out.println(seleccionarJuego(nombre, catalogoJuegos).getSistemas());
-                            System.out.println("¿Qué deseas hacer?");
                             int opcionSistema = 0;
                             if (seleccionarJuego(nombre, catalogoJuegos).getNumeroSistemas() >= 4) {
                                 activador = true;
                                 do {
                                     try {
+                                        System.out.println("El juego " + nombre + " está disponible en los siguientes sistemas:");
+                                        System.out.println(seleccionarJuego(nombre, catalogoJuegos).getSistemas());
+                                        System.out.println("¿Qué deseas hacer?");
                                         System.out.println("""
                                                 1. Modificar un sistema existente
                                                 2. Eliminar un sistema existente
@@ -390,13 +390,14 @@ public class GestorJuegos {
                                 } while (activador);
                                 switch(opcionSistema) {
                                     case 1:
-                                        System.out.println("¿Qué sistema quieres modificar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
-                                        for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas())
-                                            System.out.println(consola);
                                         String sistemaModificar;
                                         do {
+                                            System.out.println("¿Qué sistema quieres modificar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
+                                            for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas()) {
+                                                System.out.println(consola);
+                                            }
                                             sistemaModificar = sc.nextLine();
-                                            if (seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaModificar)) {
+                                            if (seleccionarJuego(nombre, catalogoJuegos).existeConsola(sistemaModificar)) {//
                                                 int opcionModificarSistema = 0;
                                                 do {
                                                     try {
@@ -426,7 +427,7 @@ public class GestorJuegos {
                                                                 double precio = sc.nextDouble();
                                                                 sc.nextLine();
                                                                 if (precio >= 0f) {
-                                                                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarPrecio(precio);
+                                                                    seleccionarJuego(nombre, catalogoJuegos).seleccionarEdicion(sistemaModificar).modificarPrecio(precio);
                                                                     System.out.println("Precio de '" + nombre + "' en " + sistemaModificar + " actualizado a " + precio + "€.");
                                                                     activador = false;
                                                                 } else {
@@ -447,7 +448,7 @@ public class GestorJuegos {
                                                                 int stock = sc.nextInt();
                                                                 sc.nextLine();
                                                                 if (stock >= 0) {
-                                                                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
+                                                                    seleccionarJuego(nombre, catalogoJuegos).seleccionarEdicion(sistemaModificar).modificarStock(stock);
                                                                     System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "ud.");
                                                                     activador = false;
                                                                 } else {
@@ -468,17 +469,18 @@ public class GestorJuegos {
                                             } else {
                                                 System.out.println("El sistema no existe o no coincide exactamente con el nombre del sistema.");
                                             }
-                                        } while (!seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaModificar) || sistemaModificar.equalsIgnoreCase("salir"));
+                                        } while (!seleccionarJuego(nombre, catalogoJuegos).seleccionarEdicion(sistemaModificar).getConsola().equals(sistemaModificar) || sistemaModificar.equalsIgnoreCase("salir"));
                                         break;
                                     case 2:
                                         String sistemaEliminar;
                                         activador = true;
                                         do {
                                             System.out.println("¿Qué sistema quieres eliminar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
-                                            for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas())
+                                            for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas()) {
                                                 System.out.println(consola);
+                                            }
                                             sistemaEliminar = sc.nextLine();
-                                            if (seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaEliminar)) {
+                                            if (seleccionarJuego(nombre, catalogoJuegos).existeConsola(sistemaEliminar)) {
                                                 seleccionarJuego(nombre, catalogoJuegos).eliminarEdicion(sistemaEliminar);
                                                 System.out.println("Sistema eliminado.");
                                                 activador = false;
@@ -568,7 +570,7 @@ public class GestorJuegos {
                                                     }
                                                 } while (activadorStock);
                                                 EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                                                seleccionarJuego(nombre, catalogoJuegos).anadirEdicion(consola, edicionJuego);
+                                                seleccionarJuego(nombre, catalogoJuegos).anadirEdicion(edicionJuego);
                                             } else {
                                                 System.out.println("Sistema no válido, por favor escribe el nombre de un sistema de la lista.");
                                             }
@@ -601,13 +603,14 @@ public class GestorJuegos {
                                 } while (activador);
                                 switch(opcionSistema) {
                                     case 1:
-                                        System.out.println("¿Qué sistema quieres modificar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
-                                        for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas())
-                                            System.out.println(consola);
                                         String sistemaModificar;
                                         do {
+                                            System.out.println("¿Qué sistema quieres modificar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
+                                            for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas()) {
+                                                System.out.println(consola);
+                                            }
                                             sistemaModificar = sc.nextLine();
-                                            if (seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaModificar)) {
+                                            if (seleccionarJuego(nombre, catalogoJuegos).existeConsola(sistemaModificar)) {
                                                 int opcionModificarSistema = 0;
                                                 do {
                                                     try {
@@ -637,7 +640,7 @@ public class GestorJuegos {
                                                                 double precio = sc.nextDouble();
                                                                 sc.nextLine();
                                                                 if (precio >= 0f) {
-                                                                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarPrecio(precio);
+                                                                    seleccionarJuego(nombre, catalogoJuegos).seleccionarEdicion(sistemaModificar).modificarPrecio(precio);
                                                                     System.out.println("Precio de '" + nombre + "' en " + sistemaModificar + " actualizado a " + precio + "€.");
                                                                     activador = false;
                                                                 } else {
@@ -658,7 +661,7 @@ public class GestorJuegos {
                                                                 int stock = sc.nextInt();
                                                                 sc.nextLine();
                                                                 if (stock >= 0) {
-                                                                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(sistemaModificar).modificarStock(stock);
+                                                                    seleccionarJuego(nombre, catalogoJuegos).seleccionarEdicion(sistemaModificar).modificarStock(stock);
                                                                     System.out.println("Stock de '" + nombre + "' en " + sistemaModificar + " actualizado a " + stock + "ud.");
                                                                     activador = false;
                                                                 } else {
@@ -679,17 +682,18 @@ public class GestorJuegos {
                                             } else {
                                                 System.out.println("El sistema no existe o no coincide exactamente con el nombre del sistema.");
                                             }
-                                        } while (!seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaModificar) || sistemaModificar.equalsIgnoreCase("salir"));
+                                        } while (!seleccionarJuego(nombre, catalogoJuegos).existeConsola(sistemaModificar) || sistemaModificar.equalsIgnoreCase("salir"));
                                         break;
                                     case 2:
                                         String sistemaEliminar;
                                         activador = true;
                                         do {
                                             System.out.println("¿Qué sistema quieres eliminar? (Escribe 'Salir' si no quieres eliminar ningún sistema)");
-                                            for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas())
+                                            for (String consola: seleccionarJuego(nombre, catalogoJuegos).getConsolas()) {
                                                 System.out.println(consola);
+                                            }
                                             sistemaEliminar = sc.nextLine();
-                                            if (seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().containsKey(sistemaEliminar)) {
+                                            if (seleccionarJuego(nombre, catalogoJuegos).existeConsola(sistemaEliminar)) {
                                                 seleccionarJuego(nombre, catalogoJuegos).eliminarEdicion(sistemaEliminar);
                                                 System.out.println("Sistema eliminado.");
                                                 activador = false;
@@ -759,7 +763,7 @@ public class GestorJuegos {
                                                     }
                                                 } while (activadorStock);
                                                 EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
-                                                seleccionarJuego(nombre, catalogoJuegos).anadirEdicion(consola, edicionJuego);
+                                                seleccionarJuego(nombre, catalogoJuegos).anadirEdicion(edicionJuego);
                                             } else {
                                                 System.out.println("Sistema no válido, por favor escribe el nombre de un sistema de la lista.");
                                             }
@@ -945,7 +949,7 @@ public class GestorJuegos {
         ArrayList<String> stockJuegos = new ArrayList<>();
         int numeroJuegos = 0;
         for (Juego j : catalogoJuegos) {
-            for (EdicionJuego edicion : j.getEdicionJuego().values()) {
+            for (EdicionJuego edicion : j.getEdicionJuego()) {
                 String codigo = edicion.getStock() + " -:- " + j.getNombre() + " -:- " + edicion.getConsola();
                 stockJuegos.add(codigo);
             }
@@ -967,7 +971,7 @@ public class GestorJuegos {
             String consola = juego.split(" -:- ")[2];
             listado += seleccionarJuego(nombre, catalogoJuegos).getStock(consola) + "ud - " +
                     seleccionarJuego(nombre, catalogoJuegos).getNombre() + " - " +
-                    seleccionarJuego(nombre, catalogoJuegos).getEdicionJuego().get(consola).getConsola() + "\n";
+                    seleccionarJuego(nombre, catalogoJuegos).seleccionarEdicion(consola).getConsola() + "\n";
             numeroJuegos ++;
         }
         if (numeroJuegos == 0) {

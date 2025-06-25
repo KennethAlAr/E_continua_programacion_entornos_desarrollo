@@ -77,9 +77,9 @@ public class GestorVentas {
                         if (listaSistemasDisponibles.contains(sistema)) {
                             activador = false;
                             HashMap<Juego, EdicionJuego> juegoEdicion = new HashMap<>();
-                            juegoEdicion.put(juego, juego.getEdicionJuego().get(sistema));
+                            juegoEdicion.put(juego, juego.seleccionarEdicion(sistema));
                             System.out.println("Juego '" + juego.getNombre() + "' para " + sistema + " añadido a la lista de la compra. Precio: "
-                                    + String.format("%.2f", juego.getEdicionJuego().get(sistema).getPrecio()) + "€.");
+                                    + String.format("%.2f", juego.seleccionarEdicion(sistema).getPrecio()) + "€.");
                             listaCompra.add(juegoEdicion);
                         } else {
                             System.out.println("Sistema no válido, por favor escribe el nombre de un sistema de la lista.");
@@ -144,7 +144,7 @@ public class GestorVentas {
                             cliente.aumentarImporteVentas(venta.getImporteVenta());
                             for (HashMap<Juego, EdicionJuego> articulo : listaCompra) {
                                 for (Juego j : articulo.keySet()) {
-                                    for (EdicionJuego edicionJuego : j.getEdicionJuego().values()){
+                                    for (EdicionJuego edicionJuego : j.getEdicionJuego()){
                                         if (articulo.values().contains(edicionJuego)) {
                                             edicionJuego.reducirStock();
                                         }

@@ -100,69 +100,69 @@ public class GestorTiendaJuegos {
         //Carga en el catálogo inicial de juegos.
         Juego juego1 = new Juego("The Legend of Zelda: TOTK", "Aventura", "PEGI-12");
         EdicionJuego edicionJuego1_1 = new EdicionJuego("Nintendo", 59.99, 20);
-        juego1.anadirEdicion("Nintendo", edicionJuego1_1);
+        juego1.anadirEdicion(edicionJuego1_1);
 
         Juego juego2 = new Juego ("Halo Infinite", "Shooter", "PEGI-16");
         EdicionJuego edicionJuego2_1 = new EdicionJuego("XBOX", 49.99, 15);
-        juego2.anadirEdicion("XBOX", edicionJuego2_1);
+        juego2.anadirEdicion(edicionJuego2_1);
 
         Juego juego3 = new Juego ("God of War: Ragnarok", "Acción", "PEGI-18");
         EdicionJuego edicionJuego3_1 = new EdicionJuego("Play Station", 69.99, 10);
-        juego3.anadirEdicion("Play Station", edicionJuego3_1);
+        juego3.anadirEdicion(edicionJuego3_1);
 
         Juego juego4 = new Juego("Elden Ring", "RPG", "PEGI-18");
         EdicionJuego edicionJuego4_1 = new EdicionJuego("PC", 54.99, 12);
         EdicionJuego edicionJuego4_2 = new EdicionJuego("Play Station", 59.99, 8);
-        juego4.anadirEdicion("PC", edicionJuego4_1);
-        juego4.anadirEdicion("Play Station", edicionJuego4_2);
+        juego4.anadirEdicion(edicionJuego4_1);
+        juego4.anadirEdicion(edicionJuego4_2);
 
         Juego juego5 = new Juego("Mario Kart 8 Deluxe", "Carreras", "PEGI-3");
         EdicionJuego edicionJuego5_1 = new EdicionJuego("Nintendo", 44.99, 25);
-        juego5.anadirEdicion("Nintendo", edicionJuego5_1);
+        juego5.anadirEdicion(edicionJuego5_1);
 
         Juego juego6 = new Juego("Minecraft", "Sandbox", "PEGI-7");
         EdicionJuego edicionJuego6_1 = new EdicionJuego("PC", 26.95, 40);
         EdicionJuego edicionJuego6_2 = new EdicionJuego("XBOX", 29.99, 22);
-        juego6.anadirEdicion("PC", edicionJuego6_1);
-        juego6.anadirEdicion("XBOX", edicionJuego6_2);
+        juego6.anadirEdicion(edicionJuego6_1);
+        juego6.anadirEdicion(edicionJuego6_2);
 
         Juego juego7 = new Juego("FIFA 24", "Deportes", "PEGI-3");
         EdicionJuego edicionJuego7_1 = new EdicionJuego("PC", 49.99, 30);
         EdicionJuego edicionJuego7_2 = new EdicionJuego("XBOX", 54.99, 20);
         EdicionJuego edicionJuego7_3 = new EdicionJuego("Play Station", 54.99, 18);
-        juego7.anadirEdicion("PC", edicionJuego7_1);
-        juego7.anadirEdicion("XBOX", edicionJuego7_2);
-        juego7.anadirEdicion("Play Station", edicionJuego7_3);
+        juego7.anadirEdicion(edicionJuego7_1);
+        juego7.anadirEdicion(edicionJuego7_2);
+        juego7.anadirEdicion(edicionJuego7_3);
 
         Juego juego8 = new Juego("Animal Crossing: NH", "Simulación", "PEGI-3");
         EdicionJuego edicionJuego8_1 = new EdicionJuego("Nintendo", 39.99, 17);
-        juego8.anadirEdicion("Nintendo", edicionJuego8_1);
+        juego8.anadirEdicion(edicionJuego8_1);
 
         Juego juego9 = new Juego("Horizon Forbidden West", "Aventura", "PEGI-16");
         EdicionJuego edicionJuego9_1 = new EdicionJuego("Play Station", 59.99, 12);
-        juego9.anadirEdicion("Play Station", edicionJuego9_1);
+        juego9.anadirEdicion(edicionJuego9_1);
 
         Juego juego10 = new Juego("Forza Horizon 5", "Carreras", "PEGI-3");
         EdicionJuego edicionJuego10_1 = new EdicionJuego("XBOX", 64.99, 14);
         EdicionJuego edicionJuego10_2 = new EdicionJuego("PC", 59.99, 10);
-        juego10.anadirEdicion("XBOX", edicionJuego10_1);
-        juego10.anadirEdicion("PC", edicionJuego10_2);
+        juego10.anadirEdicion(edicionJuego10_1);
+        juego10.anadirEdicion(edicionJuego10_2);
 
         Juego juego11 = new Juego("Resident Evil Village", "Terror", "PEGI-18");
         EdicionJuego edicionJuego11_1 = new EdicionJuego("PC", 49.99, 9);
         EdicionJuego edicionJuego11_2 = new EdicionJuego("Play Station", 52.99, 6);
-        juego11.anadirEdicion("PC", edicionJuego11_1);
-        juego11.anadirEdicion("Play Station", edicionJuego11_2);
+        juego11.anadirEdicion(edicionJuego11_1);
+        juego11.anadirEdicion(edicionJuego11_2);
 
         Juego juego12 = new Juego("Super Smash Bros. Ultimate", "Lucha", "PEGI-12");
         EdicionJuego edicionJuego12_1 = new EdicionJuego("Nintendo", 54.99, 21);
-        juego12.anadirEdicion("Nintendo", edicionJuego12_1);
+        juego12.anadirEdicion(edicionJuego12_1);
 
         Juego juego13 = new Juego("Call of Duty: MWIII", "Shooter", "PEGI-18");
         EdicionJuego edicionJuego13_1 = new EdicionJuego("XBOX", 69.99, 13);
         EdicionJuego edicionJuego13_2 = new EdicionJuego("PC", 64.99, 10);
-        juego13.anadirEdicion("XBOX", edicionJuego13_1);
-        juego13.anadirEdicion("PC", edicionJuego13_2);
+        juego13.anadirEdicion(edicionJuego13_1);
+        juego13.anadirEdicion(edicionJuego13_2);
 
         catalogoJuegos.add(juego1);
         catalogoJuegos.add(juego2);
