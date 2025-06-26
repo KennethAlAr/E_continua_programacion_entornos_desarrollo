@@ -207,7 +207,7 @@ public class GestorClientes {
                         }
                         System.out.println("Escribe 'Si' si quieres modificar algún otro dato, sino escribe cualquier otra cosa.");
                         String opcionModificarMas = sc.nextLine();
-                        interruptor = !opcionModificarMas.equals("Si");
+                        interruptor = opcionModificarMas.equalsIgnoreCase("Si");
                     } catch (InputMismatchException e) {
                         System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
                         sc.nextLine();

@@ -30,7 +30,7 @@ public class GestorTiendaJuegos {
                         GestorJuegos.menuPrincipalJuegos(catalogoJuegos, sc);
                         break;
                     case 3:
-                        GestorVentas.sistemaVentas(historialVentas, listaClientes, catalogoJuegos);
+                        GestorVentas.sistemaVentas(historialVentas, listaClientes, catalogoJuegos, sc);
                         break;
                     case 4:
                         System.out.println("Opción 4\n");

@@ -154,7 +154,7 @@ public class GestorJuegos {
      */
     public static void menuSistemasNuevoJuego(String nombre, ArrayList<Juego> catalogoJuegos, Scanner sc) {
         ArrayList<Integer> numerosEdiciones = new ArrayList<>();
-        boolean activador = true;
+        boolean interruptor = true;
         do {
             try {
                 numerosEdiciones.clear();
@@ -177,13 +177,13 @@ public class GestorJuegos {
                         throw new IllegalArgumentException();
                     }
                 }
-                activador = false;
+                interruptor = false;
             } catch (NumberFormatException e) {
                 System.out.println("Opción no válida, por favor, elige una opción u opciones de las disponibles. Recuerda separarlas con guiones si son mas de una.\n");
             } catch (IllegalArgumentException e) {
                 System.out.println("Alguna de las opciones no es válida, por favor, elige una o varias opciones de las disponibles.");
             }
-        } while (activador);
+        } while (interruptor);
         for (int numero : numerosEdiciones) {
             if (numero == 1) {
                 String consola = "XBOX";
@@ -210,7 +210,7 @@ public class GestorJuegos {
      * @see #anadirSistema(String, ArrayList, Scanner)
      */
     public static void anadirSistema (String nombre, String consola, ArrayList<Juego> catalogoJuegos, Scanner sc) {
-        boolean activador = true;
+        boolean interruptor = true;
         double precio = 0f;
         do {
             try {
@@ -218,7 +218,7 @@ public class GestorJuegos {
                 precio = sc.nextDouble();
                 sc.nextLine();
                 if (precio >= 0f) {
-                    activador = false;
+                    interruptor = false;
                 } else {
                     System.out.println("El precio no puede ser negativo.");
                 }
@@ -226,8 +226,8 @@ public class GestorJuegos {
                 System.out.println("Importe no válido, por favor, ingresa un importe válido.");
                 sc.nextLine();
             }
-        } while (activador);
-        activador = true;
+        } while (interruptor);
+        interruptor = true;
         int stock = 0;
         do {
             try {
@@ -235,7 +235,7 @@ public class GestorJuegos {
                 stock = sc.nextInt();
                 sc.nextLine();
                 if (stock >= 0) {
-                    activador = false;
+                    interruptor = false;
                 } else {
                     System.out.println("El stock no puede ser negativo.");
                 }
@@ -243,7 +243,7 @@ public class GestorJuegos {
                 System.out.println("Unidades no válidas, por favor, ingresa un número de unidades válido.");
                 sc.nextLine();
             }
-        } while (activador);
+        } while (interruptor);
         EdicionJuego edicionJuego = new EdicionJuego(consola, precio, stock);
         seleccionarJuego(nombre, catalogoJuegos).anadirEdicion(edicionJuego);
     }
@@ -331,7 +331,7 @@ public class GestorJuegos {
                         sc.nextLine();
                         switch(opcion) {
                             case 1:
-                                modificarNombreJuego(nombre, catalogoJuegos, sc);
+                                nombre = modificarNombreJuego(nombre, catalogoJuegos, sc);
                                 break;
                             case 2:
                                 modificarGeneroJuego(nombre, catalogoJuegos, sc);
@@ -343,6 +343,7 @@ public class GestorJuegos {
                                 menuGestionSistemas(nombre, catalogoJuegos, sc);
                                 break;
                             case 5:
+                                interruptor = false;
                                 break;
                             default:
                                 System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
@@ -364,18 +365,20 @@ public class GestorJuegos {
      * @param catalogoJuegos Lista de juegos donde se encuentra el juego que se quiere modificar.
      * @param sc Scanner para introducir datos.
      */
-    public static void modificarNombreJuego(String nombre, ArrayList<Juego> catalogoJuegos, Scanner sc) {
-        boolean activador = true;
+    public static String modificarNombreJuego(String nombre, ArrayList<Juego> catalogoJuegos, Scanner sc) {
+        boolean interruptor = true;
+        String nuevoNombre;
         do {
             System.out.println("Modificando el nombre del juego:\n¿Cuál es el nuevo nombre de '" + nombre + "'?");
-            String nuevoNombre = sc.nextLine();
+            nuevoNombre = sc.nextLine();
             if (!juegoExiste(nuevoNombre, catalogoJuegos)) {
                 System.out.println(seleccionarJuego(nombre, catalogoJuegos).modificarNombre(nuevoNombre));
-                activador = false;
+                interruptor = false;
             } else {
                 System.out.println("Ya existe un juego con ese nombre en el catálogo, por favor, elige otro nombre.");
             }
-        } while (activador);
+        } while (interruptor);
+        return nuevoNombre;
     }
 
     /**
@@ -415,9 +418,13 @@ public class GestorJuegos {
                         switch (opcion) {
                             case 1:
                                 menuModificarSistema(nombre, catalogoJuegos, sc);
+                                menuGestionSistemas(nombre, catalogoJuegos, sc);
+                                opcion = 3;
                                 break;
                             case 2:
                                 eliminarSistema(nombre, catalogoJuegos, sc);
+                                menuGestionSistemas(nombre, catalogoJuegos, sc);
+                                opcion = 3;
                                 break;
                             case 3:
                                 break;
@@ -445,6 +452,8 @@ public class GestorJuegos {
                     switch (opcion) {
                         case 1:
                             anadirSistema(nombre, catalogoJuegos, sc);
+                            menuGestionSistemas(nombre, catalogoJuegos, sc);
+                            opcion = 2;
                             break;
                         case 2:
                             break;
@@ -466,19 +475,25 @@ public class GestorJuegos {
                                 1. Modificar un sistema existente
                                 2. Eliminar un sistema existente
                                 3. Añadir un sistema nuevo
-                                3. Salir
+                                4. Salir
                                 """);
                     opcion = sc.nextInt();
                     sc.nextLine();
                     switch (opcion) {
                         case 1:
                             menuModificarSistema(nombre, catalogoJuegos, sc);
+                            menuGestionSistemas(nombre, catalogoJuegos, sc);
+                            opcion = 4;
                             break;
                         case 2:
                             eliminarSistema(nombre, catalogoJuegos, sc);
+                            menuGestionSistemas(nombre, catalogoJuegos, sc);
+                            opcion = 4;
                             break;
                         case 3:
                             anadirSistema(nombre, catalogoJuegos, sc);
+                            menuGestionSistemas(nombre, catalogoJuegos, sc);
+                            opcion = 4;
                             break;
                         case 4:
                             break;
@@ -664,6 +679,8 @@ public class GestorJuegos {
                     default -> "PC";
                 };
                 anadirSistema(nombre, consola, catalogoJuegos, sc);
+            } else {
+                System.out.println("El sistema no existe o no coincide exactamente con el nombre del sistema.");
             }
         } while (interruptor);
     }
@@ -690,15 +707,19 @@ public class GestorJuegos {
                 sc.nextLine();
                 switch (opcion) {
                     case 1:
+                        System.out.println("Lista de juegos disponibles para XBOX:");
                         System.out.println(listarPorConsola("XBOX", catalogoJuegos));
                         break;
                     case 2:
+                        System.out.println("Lista de juegos disponibles para Nintendo:");
                         System.out.println(listarPorConsola("Nintendo", catalogoJuegos));
                         break;
                     case 3:
+                        System.out.println("Lista de juegos disponibles para Play Station:");
                         System.out.println(listarPorConsola("Play Station", catalogoJuegos));
                         break;
                     case 4:
+                        System.out.println("Lista de juegos disponibles para PC:");
                         System.out.println(listarPorConsola("PC", catalogoJuegos));
                         break;
                     case 5:

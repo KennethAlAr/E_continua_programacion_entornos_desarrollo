@@ -1,6 +1,7 @@
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 
 public class Venta {
@@ -48,6 +49,12 @@ public class Venta {
         }
         mensaje += "Importe total: " + String.format("%.2f" , getImporteVenta()) + "€";
         return mensaje;
+    }
+
+    public void anadirArticulo(Juego juego, EdicionJuego edicionJuego) {
+        HashMap<Juego, EdicionJuego> articulo = new HashMap<>();
+        articulo.put(juego, edicionJuego);
+        articulosVenta.add(articulo);
     }
 
 }
