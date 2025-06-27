@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 public class Juego {
@@ -138,7 +137,7 @@ public class Juego {
 
     /**
      * Método para modificar la calificación PEGI de un juego.
-     * @param pegi
+     * @param pegi Nueva calificación PEGI del juego.
      * @return Mensaje de éxito
      */
     public String modificarPegi(String pegi) {

@@ -71,6 +71,7 @@ public class GestorTiendaJuegos {
 
     /**
      * Función para gestionar el menú para mostrar las ventas realizadas.
+     * @param listaClientes Lista de clientes donde se encuentran los clientes que han hecho las compras.
      * @param historialVentas Lista de ventas que se quiere mostrar.
      * @param sc Scanner para introducir datos.
      */

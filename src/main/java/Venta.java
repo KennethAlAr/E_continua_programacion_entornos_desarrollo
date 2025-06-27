@@ -1,7 +1,6 @@
 
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 
 public class Venta {
@@ -51,6 +50,11 @@ public class Venta {
         return mensaje;
     }
 
+    /**
+     * Método para añadir una EdicionJuego de un Juego a la lista de la compra.
+     * @param juego Juego que se quiere añadir a la lista de la compra.
+     * @param edicionJuego EdicionJuego que se quiere añadir a la lista de la compra.
+     */
     public void anadirArticulo(Juego juego, EdicionJuego edicionJuego) {
         HashMap<Juego, EdicionJuego> articulo = new HashMap<>();
         articulo.put(juego, edicionJuego);

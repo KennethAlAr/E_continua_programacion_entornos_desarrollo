@@ -36,4 +36,8 @@ public class EdicionJuego {
      */
     public void reducirStock() {this.stock -= 1;}
 
+    /**
+     * Método para aumentar el stock de un juego en un sistema en 1.
+     */
+    public void aumentarStock() {this.stock += 1;}
 }

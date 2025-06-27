@@ -53,7 +53,7 @@ public class GestorClientes {
 
     /**
      * Función para construir el menú de Gestión de Clientes.
-     * @return menu String que contiene el menú de Gestión de Clientes para imprimir.
+     * @return String que contiene el menú de Gestión de Clientes para imprimir.
      */
     public static String stringMenuPrincipalClientes() {
         String menu = """
@@ -77,7 +77,7 @@ public class GestorClientes {
      * @param sc Scanner para introducir datos.
      */
     public static void menuAltaCliente(ArrayList<Cliente> listaClientes, Scanner sc) {
-        String dni = "";
+        String dni;
         do {
             System.out.println("Introduce el DNI del nuevo cliente:");
             dni = sc.nextLine().toUpperCase();
@@ -173,7 +173,6 @@ public class GestorClientes {
             if (dni.equalsIgnoreCase("salir")) {
                 interruptor = false;
             } else if (clienteExiste(dni, listaClientes)) {
-                interruptor = true;
                 Cliente cliente = seleccionarCliente(dni, listaClientes);
                 do {
                     try {
@@ -249,6 +248,7 @@ public class GestorClientes {
     /**
      * Función que imprime la lista de clientes con sus datos en orden alfabético.
      * @param listaClientes Lista de los clientes que se quiere ordenar y listar.
+     * @return String con el listado de los clientes en orden alfabético.
      */
     public static String listarAlfabetico(ArrayList<Cliente> listaClientes) {
         String mensaje = "Listado de clientes (Orden alfabético)\n";
@@ -271,6 +271,7 @@ public class GestorClientes {
     /**
      * Función que ordena e imprime la lista de clientes según el importe de las ventas realizadas a dicho cliente (orden ascendente).
      * @param listaClientes Lista de los clientes que se quiere ordenar y listar.
+     * @return String con el listado de clientes en orden de importe de ventas.
      */
     public static String listarPorVentas(ArrayList<Cliente> listaClientes) {
         String mensaje = "Listado de clientes (Orden por importe de ventas)\n";

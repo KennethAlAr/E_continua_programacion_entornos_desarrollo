@@ -54,7 +54,7 @@ public class GestorJuegos {
 
     /**
      * Función para construir el menú de Gestión de Inventario.
-     * @return menu String que contiene el menú de Gestión de Inventario para imprimir.
+     * @return String que contiene el menú de Gestión de Inventario para imprimir.
      */
     public static String stringMenuPrincipalJuegos() {
         return """
@@ -364,6 +364,7 @@ public class GestorJuegos {
      * @param nombre Nombre del juego que se quiere modificar.
      * @param catalogoJuegos Lista de juegos donde se encuentra el juego que se quiere modificar.
      * @param sc Scanner para introducir datos.
+     * @return Nuevo nombre asignado al cliente.
      */
     public static String modificarNombreJuego(String nombre, ArrayList<Juego> catalogoJuegos, Scanner sc) {
         boolean interruptor = true;

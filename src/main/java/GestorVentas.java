@@ -89,6 +89,11 @@ public class GestorVentas {
                 } while (!opcionValida);
             }
         } while (opcion != 2);
+        if (salir) {
+            for (HashMap<Juego, EdicionJuego> articulo : venta.getArticulosVenta()) {
+                articulo.get(getJuego(articulo)).aumentarStock();
+            }
+        }
         return salir;
     }
 
@@ -148,6 +153,7 @@ public class GestorVentas {
                     interruptor = false;
                     EdicionJuego edicionJuego = juego.seleccionarEdicion(sistema);
                     venta.anadirArticulo(juego, edicionJuego);
+                    venta.getArticulosVenta().getLast().get(juego).reducirStock();
                     System.out.println("Juego '" + juego.getNombre() + "' para " + sistema + " añadido a la lista de la compra. Precio: "
                             + String.format("%.2f", juego.seleccionarEdicion(sistema).getPrecio()) + "€.");
                 } else {
@@ -181,13 +187,13 @@ public class GestorVentas {
                     case 1:
                         historialVentas.add(venta);
                         venta.getCliente().aumentarImporteVentas(venta.getImporteVenta());
-                        for (HashMap<Juego, EdicionJuego> articulo : venta.getArticulosVenta()) {
-                            articulo.get(getJuego(articulo)).reducirStock();
-                        }
                         System.out.println(stringTicketCompra(venta, historialVentas));
                         opcion = 2;
                         break;
                     case 2:
+                        for (HashMap<Juego, EdicionJuego> articulo : venta.getArticulosVenta()) {
+                            articulo.get(getJuego(articulo)).aumentarStock();
+                        }
                         break;
                     default:
                         System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
@@ -201,6 +207,7 @@ public class GestorVentas {
 
     /**
      * Función para seleccionar el juego de un artículo de la lista de la compra.
+     * @param articulo Artículo donde se encuentra el HashMap<Juego, EdicionJuego>
      * @return Juego seleccionado.
      * @throws NoSuchElementException en caso de que el juego no se encuentre en la lista de la compra.
      */
