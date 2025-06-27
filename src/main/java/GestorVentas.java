@@ -184,7 +184,7 @@ public class GestorVentas {
                         for (HashMap<Juego, EdicionJuego> articulo : venta.getArticulosVenta()) {
                             articulo.get(getJuego(articulo)).reducirStock();
                         }
-                        //TODO Imprimir ticket de la compra.
+                        System.out.println(stringTicketCompra(venta, historialVentas));
                         opcion = 2;
                         break;
                     case 2:
@@ -209,6 +209,28 @@ public class GestorVentas {
             return j;
         }
         throw new NoSuchElementException("El juego no se encuentra en la lista de la compra.");
+    }
+
+    /**
+     * Función que devuelve un String con la factura de la venta.
+     * @param venta Venta para la cual se hace la factura.
+     * @param historialVentas Lista de ventas donde se encuentra la venta.
+     * @return String con el ticket de la venta realizada con: Número de factura, cliente, fecha, lista de artículos y total de la venta.
+     */
+    public static String stringTicketCompra (Venta venta, ArrayList<Venta> historialVentas) {
+        String mensaje = "";
+        String numeroVenta;
+        if (historialVentas.indexOf(venta) < 11) {
+            numeroVenta = "00" + (historialVentas.indexOf(venta)+1);
+        } else if (historialVentas.indexOf(venta) < 101) {
+            numeroVenta = "0" + (historialVentas.indexOf(venta)+1);
+        } else {
+            numeroVenta = Integer.toString(historialVentas.indexOf(venta)+1);
+        }
+        String numeroFactura = "FV-" + venta.getFecha().substring(6)
+                + venta.getFecha().substring(3,5) + "-" + numeroVenta + "\n";
+        mensaje += numeroFactura + venta.resumenVenta();
+        return mensaje;
     }
 
 }

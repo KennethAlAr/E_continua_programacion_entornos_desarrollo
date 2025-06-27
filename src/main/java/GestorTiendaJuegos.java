@@ -2,6 +2,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class GestorTiendaJuegos {
@@ -15,7 +16,7 @@ public class GestorTiendaJuegos {
         ArrayList<Cliente> listaClientes = new ArrayList<>();
         ArrayList<Juego> catalogoJuegos = new ArrayList<>();
         ArrayList<Venta> historialVentas = new ArrayList<>();
-        configuracionInicial(catalogoJuegos, listaClientes);
+        configuracionInicial(catalogoJuegos, listaClientes, historialVentas);
 
         do {
             try {
@@ -33,7 +34,7 @@ public class GestorTiendaJuegos {
                         GestorVentas.sistemaVentas(historialVentas, listaClientes, catalogoJuegos, sc);
                         break;
                     case 4:
-                        System.out.println("Opción 4\n");
+                        menuMostrarVentas(listaClientes, historialVentas, sc);
                         break;
                     case 5:
                         System.out.println("¡Gracias por usar nuestro programa de gestión de tiendas de juegos!\n");
@@ -52,7 +53,7 @@ public class GestorTiendaJuegos {
 
     /**
      * Función para construir el menú principal de la aplicación.
-     * @return menu String que contiene el menú principal de la aplicación para imprimir.
+     * @return String que contiene el menú principal de la aplicación para imprimir.
      */
     public static String menuPrincipal(){
         String menu = """
@@ -69,11 +70,117 @@ public class GestorTiendaJuegos {
     }
 
     /**
-     * Configuración inicial de prueba para poner contenido en la base de datos de clientes y catálogo de juegos.
+     * Función para gestionar el menú para mostrar las ventas realizadas.
+     * @param historialVentas Lista de ventas que se quiere mostrar.
+     * @param sc Scanner para introducir datos.
+     */
+    public static void menuMostrarVentas(ArrayList<Cliente> listaClientes, ArrayList<Venta> historialVentas, Scanner sc) {
+        int opcion = 0;
+        do {
+            try {
+                System.out.println(stringMenuMostrarVentas());
+                opcion = sc.nextInt();
+                sc.nextLine();
+                switch(opcion) {
+                    case 1:
+                        System.out.println(mostrarTodasVentas(historialVentas));
+                        break;
+                    case 2:
+                        System.out.println(mostrarVentasCliente(listaClientes, historialVentas, sc));
+                        break;
+                    default:
+                        System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Opción no válida, por favor, elige una opción de las disponibles.\n");
+                sc.nextLine();
+            }
+        } while (opcion != 3);
+    }
+
+    /**
+     * Función para construir el menú principal de la gestión de muestra de ventas.
+     * @return String que contiene el menú principal de la gestión de muestra de ventas para imprimir
+     */
+    public static String stringMenuMostrarVentas() {
+        String menu = """
+                ### MOSTRAR VENTAS ###
+                
+                1. Mostrar todas las ventas
+                2. Mostrar ventas de cliente
+                3. Salir
+                
+                Elige una opción:""";
+        return menu;
+    }
+
+    /**
+     * Función para mostrar todas las ventas de una lista de ventas.
+     * @param historialVentas Lista de ventas que se quiere mostrar al completo.
+     * @return String con la lista de las facturas de las ventas mostradas.
+     */
+    public static String mostrarTodasVentas(ArrayList<Venta> historialVentas) {
+        String mensaje = "###HISTORIAL DE TODAS LAS VENTAS###\n";
+        if (historialVentas.isEmpty()) {
+            mensaje += "No hay ventas en el historial de ventas.";
+        } else {
+            for (Venta venta : historialVentas) {
+                mensaje += GestorVentas.stringTicketCompra(venta, historialVentas) + "\n";
+                mensaje +="----------\n";
+            }
+        }
+        return mensaje;
+    }
+
+    /**
+     * Función para listar todas las compras realizadas por un cliente.
+     * @param listaClientes Lista de clientes donde se encuentra el cliente que se quiere mostrar.
+     * @param historialVentas Lista de Ventas donde se encuentran las ventas hechas por el cliente.
+     * @param sc Scanner para introducir datos.
+     * @return String con la información de las ventas del cliente o, en caso de no tener ninguna venta, mensaje indicándolo.
+     */
+    public static String mostrarVentasCliente(ArrayList<Cliente> listaClientes, ArrayList<Venta> historialVentas, Scanner sc) {
+        String mensaje = "";
+        boolean interruptor = true;
+        do {
+            System.out.println("Introduce el DNI del cliente para ver el historial de sus compras o escribe 'salir' para salir.");
+            System.out.println(GestorClientes.listarAlfabetico(listaClientes));
+            String dni = sc.nextLine();
+            if (dni.equalsIgnoreCase("salir")) {
+                mensaje = "Saliendo de la búsqueda de compras por DNI.";
+                interruptor = false;
+            } else if (GestorClientes.clienteExiste(dni, listaClientes)) {
+                int contador = 0;
+                for (Cliente c : listaClientes) {
+                    if (c.getDni().equals(dni)) {
+                        mensaje = "Cliente: " + c.getNombre() + " - " + c.getDni() + " - " + c.getTelefono() + " - " + c.getEmail() + "\n"
+                                + "Importe total de las ventas: " + String.format("%.2f", c.getImporteVentas()) + "€\n----------\n";
+                    }
+                }
+                for (Venta venta : historialVentas) {
+                    if (venta.getCliente().getDni().equals(dni)) {
+                        mensaje += GestorVentas.stringTicketCompra(venta, historialVentas) + "\n----------\n";
+                        contador += 1;
+                    }
+                }
+                if (contador == 0) {
+                    mensaje = "El cliente no tiene ninguna compra realizada.";
+                }
+                interruptor = false;
+            } else {
+                System.out.println("El DNI introducido no coincide con ningún cliente de la base de datos.");
+            }
+        } while (interruptor);
+        return mensaje;
+    }
+
+    /**
+     * Configuración inicial de prueba para poner contenido en la base de datos de clientes, catálogo de juegos e historial de ventas.
      * @param catalogoJuegos Cátalogo donde se quieren introducir los juegos.
      * @param listadoClientes Lista donde se quieren incluir los clientes.
+     * @param historialVentas Historial donde se quieren incluir las ventas.
      */
-    public static void configuracionInicial(ArrayList<Juego> catalogoJuegos, ArrayList<Cliente> listadoClientes) {
+    public static void configuracionInicial(ArrayList<Juego> catalogoJuegos, ArrayList<Cliente> listadoClientes, ArrayList<Venta> historialVentas) {
 
         //Carga en el catálogo inicial de juegos.
         Juego juego1 = new Juego("The Legend of Zelda: TOTK", "Aventura", "PEGI-12");
@@ -159,34 +266,34 @@ public class GestorTiendaJuegos {
 
         //Carga en el listado inicial de clientes.
         Cliente cliente1 = new Cliente("Juan Pérez", "12345678A", "600000001", "juanperez@email.com");
-        cliente1.aumentarImporteVentas(1520.75);
+        cliente1.aumentarImporteVentas(99.98);
 
         Cliente cliente2 = new Cliente("Laura Gómez", "23456789B", "600000002", "lauragomez@email.com");
-        cliente2.aumentarImporteVentas(785.40);
+        cliente2.aumentarImporteVentas(404.84);
 
         Cliente cliente3 = new Cliente("Marta Sánchez", "34567890C", "600000003", "martasanchez@email.com");
-        cliente3.aumentarImporteVentas(1320.00);
+        cliente3.aumentarImporteVentas(487.92);
 
         Cliente cliente4 = new Cliente("Pedro Martínez", "45678901D", "600000004", "pedrom@email.com");
-        cliente4.aumentarImporteVentas(1987.90);
+        cliente4.aumentarImporteVentas(186.92);
 
         Cliente cliente5 = new Cliente("Juan Pérez", "56789012E", "600000005", "juanperez2@email.com");
-        cliente5.aumentarImporteVentas(910.25);
+        cliente5.aumentarImporteVentas(249.96);
 
         Cliente cliente6 = new Cliente("Ana López", "67890123F", "600000006", "analopez@email.com");
-        cliente6.aumentarImporteVentas(1199.99);
+        cliente6.aumentarImporteVentas(169.97);
 
         Cliente cliente7 = new Cliente("Daniel Ruiz", "78901234G", "600000007", "danielruiz@email.com");
-        cliente7.aumentarImporteVentas(450.60);
+        cliente7.aumentarImporteVentas(169.97);
 
         Cliente cliente8 = new Cliente("María Torres", "89012345H", "600000008", "mariatorres@email.com");
-        cliente8.aumentarImporteVentas(1635.10);
+        cliente8.aumentarImporteVentas(0.00);
 
         Cliente cliente9 = new Cliente("David Romero", "90123456J", "600000009", "davidromero@email.com");
-        cliente9.aumentarImporteVentas(1300.00);
+        cliente9.aumentarImporteVentas(589.90);
 
         Cliente cliente10 = new Cliente("Lucía Navarro", "10234567K", "600000010", "lucianavarro@email.com");
-        cliente10.aumentarImporteVentas(1770.00);
+        cliente10.aumentarImporteVentas(187.97);
 
         listadoClientes.add(cliente1);
         listadoClientes.add(cliente2);
@@ -199,6 +306,113 @@ public class GestorTiendaJuegos {
         listadoClientes.add(cliente9);
         listadoClientes.add(cliente10);
 
+        //Carga en el listado inicial de ventas.
+        ArrayList<HashMap<Juego, EdicionJuego>> lista1 = new ArrayList<>();
+        lista1.add(new HashMap<>() {{ put(juego9, juego9.getEdicionJuego().get(0)); }});
+        lista1.add(new HashMap<>() {{ put(juego4, juego4.getEdicionJuego().get(0)); }});
+        lista1.add(new HashMap<>() {{ put(juego7, juego7.getEdicionJuego().get(2)); }});
+        lista1.add(new HashMap<>() {{ put(juego10, juego10.getEdicionJuego().get(0)); }});
+        lista1.add(new HashMap<>() {{ put(juego11, juego11.getEdicionJuego().get(1)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista2 = new ArrayList<>();
+        lista2.add(new HashMap<>() {{ put(juego3, juego3.getEdicionJuego().get(0)); }});
+        lista2.add(new HashMap<>() {{ put(juego11, juego11.getEdicionJuego().get(1)); }});
+        lista2.add(new HashMap<>() {{ put(juego10, juego10.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista3 = new ArrayList<>();
+        lista3.add(new HashMap<>() {{ put(juego12, juego12.getEdicionJuego().get(0)); }});
+        lista3.add(new HashMap<>() {{ put(juego10, juego10.getEdicionJuego().get(1)); }});
+        lista3.add(new HashMap<>() {{ put(juego13, juego13.getEdicionJuego().get(1)); }});
+        lista3.add(new HashMap<>() {{ put(juego3, juego3.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista4 = new ArrayList<>();
+        lista4.add(new HashMap<>() {{ put(juego6, juego6.getEdicionJuego().get(0)); }});
+        lista4.add(new HashMap<>() {{ put(juego11, juego11.getEdicionJuego().get(1)); }});
+        lista4.add(new HashMap<>() {{ put(juego2, juego2.getEdicionJuego().get(0)); }});
+        lista4.add(new HashMap<>() {{ put(juego9, juego9.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista5 = new ArrayList<>();
+        lista5.add(new HashMap<>() {{ put(juego8, juego8.getEdicionJuego().get(0)); }});
+        lista5.add(new HashMap<>() {{ put(juego1, juego1.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista6 = new ArrayList<>();
+        lista6.add(new HashMap<>() {{ put(juego7, juego7.getEdicionJuego().get(2)); }});
+        lista6.add(new HashMap<>() {{ put(juego4, juego4.getEdicionJuego().get(0)); }});
+        lista6.add(new HashMap<>() {{ put(juego9, juego9.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista7 = new ArrayList<>();
+        lista7.add(new HashMap<>() {{ put(juego3, juego3.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista8 = new ArrayList<>();
+        lista8.add(new HashMap<>() {{ put(juego7, juego7.getEdicionJuego().get(2)); }});
+        lista8.add(new HashMap<>() {{ put(juego1, juego1.getEdicionJuego().get(0)); }});
+        lista8.add(new HashMap<>() {{ put(juego4, juego4.getEdicionJuego().get(1)); }});
+        lista8.add(new HashMap<>() {{ put(juego13, juego13.getEdicionJuego().get(1)); }});
+        lista8.add(new HashMap<>() {{ put(juego3, juego3.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista9 = new ArrayList<>();
+        lista9.add(new HashMap<>() {{ put(juego1, juego1.getEdicionJuego().get(0)); }});
+        lista9.add(new HashMap<>() {{ put(juego8, juego8.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista10 = new ArrayList<>();
+        lista10.add(new HashMap<>() {{ put(juego9, juego9.getEdicionJuego().get(0)); }});
+        lista10.add(new HashMap<>() {{ put(juego13, juego13.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista11 = new ArrayList<>();
+        lista11.add(new HashMap<>() {{ put(juego3, juego3.getEdicionJuego().get(0)); }});
+        lista11.add(new HashMap<>() {{ put(juego2, juego2.getEdicionJuego().get(0)); }});
+        lista11.add(new HashMap<>() {{ put(juego13, juego13.getEdicionJuego().get(1)); }});
+        lista11.add(new HashMap<>() {{ put(juego7, juego7.getEdicionJuego().get(2)); }});
+        lista11.add(new HashMap<>() {{ put(juego8, juego8.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista12 = new ArrayList<>();
+        lista12.add(new HashMap<>() {{ put(juego6, juego6.getEdicionJuego().get(0)); }});
+        lista12.add(new HashMap<>() {{ put(juego9, juego9.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista13 = new ArrayList<>();
+        lista13.add(new HashMap<>() {{ put(juego11, juego11.getEdicionJuego().get(1)); }});
+        lista13.add(new HashMap<>() {{ put(juego13, juego13.getEdicionJuego().get(0)); }});
+        lista13.add(new HashMap<>() {{ put(juego6, juego6.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista14 = new ArrayList<>();
+        lista14.add(new HashMap<>() {{ put(juego5, juego5.getEdicionJuego().get(0)); }});
+        lista14.add(new HashMap<>() {{ put(juego9, juego9.getEdicionJuego().get(0)); }});
+        lista14.add(new HashMap<>() {{ put(juego10, juego10.getEdicionJuego().get(0)); }});
+
+        ArrayList<HashMap<Juego, EdicionJuego>> lista15 = new ArrayList<>();
+        lista15.add(new HashMap<>() {{ put(juego13, juego13.getEdicionJuego().get(1)); }});
+
+        Venta venta1 = new Venta(cliente9, lista11, "02/01/2025");
+        Venta venta2 = new Venta(cliente9, lista8, "08/05/2025");
+        Venta venta3 = new Venta(cliente4, lista9, "03/05/2025");
+        Venta venta4 = new Venta(cliente4, lista12, "14/02/2025");
+        Venta venta5 = new Venta(cliente2, lista13, "23/06/2025");
+        Venta venta6 = new Venta(cliente2, lista4, "27/02/2025");
+        Venta venta7 = new Venta(cliente2, lista15, "22/04/2025");
+        Venta venta8 = new Venta(cliente3, lista1, "01/04/2025");
+        Venta venta9 = new Venta(cliente3, lista10, "14/04/2025");
+        Venta venta10 = new Venta(cliente3, lista7, "02/04/2025");
+        Venta venta11 = new Venta(cliente10, lista2, "02/02/2025");
+        Venta venta12 = new Venta(cliente6, lista6, "30/04/2025");
+        Venta venta13 = new Venta(cliente1, lista5, "07/06/2025");
+        Venta venta14 = new Venta(cliente7, lista14, "19/04/2025");
+        Venta venta15 = new Venta(cliente5, lista3, "18/02/2025");
+
+        historialVentas.add(venta1);
+        historialVentas.add(venta2);
+        historialVentas.add(venta3);
+        historialVentas.add(venta4);
+        historialVentas.add(venta5);
+        historialVentas.add(venta6);
+        historialVentas.add(venta7);
+        historialVentas.add(venta8);
+        historialVentas.add(venta9);
+        historialVentas.add(venta10);
+        historialVentas.add(venta11);
+        historialVentas.add(venta12);
+        historialVentas.add(venta13);
+        historialVentas.add(venta14);
+        historialVentas.add(venta15);
     }
 
 }
