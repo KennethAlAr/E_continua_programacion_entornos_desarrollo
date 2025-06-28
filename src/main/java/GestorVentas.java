@@ -212,7 +212,7 @@ public class GestorVentas {
 
     /**
      * Función para seleccionar el juego de un artículo de la lista de la compra.
-     * @param articulo Artículo donde se encuentra el HashMap<Juego, EdicionJuego>
+     * @param articulo Artículo de la compra (Juego : EdicionJuego).
      * @return Juego seleccionado.
      * @throws NoSuchElementException en caso de que el juego no se encuentre en la lista de la compra.
      */

@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GestorTiendaJuegosTest {
+class GestorTiendaJuegosTest {
 
     static ArrayList<Venta> historialVentas;
 

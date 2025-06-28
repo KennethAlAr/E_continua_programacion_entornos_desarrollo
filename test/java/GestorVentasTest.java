@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class GestorVentasTest {
+class GestorVentasTest {
 
     private ArrayList<Venta> historialVentas = new ArrayList<>();
 
