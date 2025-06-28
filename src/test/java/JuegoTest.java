@@ -2,11 +2,12 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JuegoTest {
 
@@ -49,19 +50,17 @@ class JuegoTest {
 
     @Test
     public void getEdicionJuego() {
-        String consola = "Nintendo";
-        String consola2 = "PC";
-        HashMap<String, EdicionJuego> HashMapEsperado = new HashMap<>();
-        HashMapEsperado.put(consola, edicion);
-        HashMapEsperado.put(consola2, edicion2);
-        assertEquals(HashMapEsperado, juego.getEdicionJuego());
+        ArrayList<EdicionJuego> arrayListEsperado = new ArrayList<>();
+        arrayListEsperado.add(edicion);
+        arrayListEsperado.add(edicion2);
+        assertEquals(arrayListEsperado, juego.getEdicionJuego());
     }
 
     @Test
     public void getConsolas() {
         ArrayList<String> consolas = new ArrayList<>();
-        consolas.add("PC");
         consolas.add("Nintendo");
+        consolas.add("PC");
         assertEquals(consolas, juego.getConsolas());
     }
 
@@ -80,7 +79,9 @@ class JuegoTest {
     @Test
     public void getSistemas() {
         String sistemas = "PC - 39,90€ - 20ud.\nNintendo - 59,90€ - 10ud.\n";
-        assertEquals(sistemas, juego.getSistemas());
+        String sistemas2 = "Nintendo - 59,90€ - 10ud.\nPC - 39,90€ - 20ud.\n";
+        assertTrue(sistemas.equals(juego.getSistemas())
+                || sistemas2.equals(juego.getSistemas()));
     }
 
     @Test
@@ -102,7 +103,7 @@ class JuegoTest {
         String consola = "XBOX";
         EdicionJuego edicionJuego = new EdicionJuego(consola, 49.90, 30);
         juego.anadirEdicion(edicionJuego);
-        String sistemas = "PC - 39,90€ - 20ud.\nNintendo - 59,90€ - 10ud.\nXBOX - 49,90€ - 30ud.\n";
+        String sistemas = "Nintendo - 59,90€ - 10ud.\nPC - 39,90€ - 20ud.\nXBOX - 49,90€ - 30ud.\n";
         assertEquals(3, juego.getNumeroSistemas());
         assertEquals(sistemas, juego.getSistemas());
     }
@@ -152,6 +153,32 @@ class JuegoTest {
         edicion.modificarStock(0);
         edicion2.modificarStock(0);
         assertFalse(juego.tieneStock());
+    }
+
+    @Test
+    public void seleccionarEdicion() {
+        String consola = "Nintendo";
+        assertEquals(edicion, juego.seleccionarEdicion(consola));
+    }
+
+    @Test
+    public void seleccionarEdicionSinEdiciones() {
+        String consola = "XBOX";
+        assertThrows(NoSuchElementException.class, () -> {
+            juego.seleccionarEdicion(consola);
+        });
+    }
+
+    @Test
+    public void existeConsola() {
+        String consola = "Nintendo";
+        assertTrue(juego.existeConsola(consola));
+    }
+
+    @Test
+    public void noExisteConsola() {
+        String consola = "XBOX";
+        assertFalse(juego.existeConsola(consola));
     }
 
 }

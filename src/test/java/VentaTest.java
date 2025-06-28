@@ -1,7 +1,6 @@
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -77,6 +76,22 @@ public class VentaTest {
                  - Zelda - Nintendo - 59,90€
                 Importe total: 59,90€""";
         assertEquals(mensaje, historialVentas.getLast().resumenVenta());
+    }
+
+    @Test
+    public void anadirArticulo() {
+        Juego juego = new Juego("FIFA", "Deporte", "PEGI-3");
+        EdicionJuego edicion = new EdicionJuego("PC", 39.90, 50);
+        Cliente cliente = new Cliente("Kenneth", "12345678A", "666123123", "kenneth@email.com");
+        ArrayList<HashMap<Juego, EdicionJuego>> listaCompra = new ArrayList<>();
+        Venta venta = new Venta(cliente, listaCompra, "01/01/2025");
+        venta.anadirArticulo(juego, edicion);
+        Juego juegoEnListaCompra = null;
+        for (Juego j : venta.getArticulosVenta().getLast().keySet()) {
+            juegoEnListaCompra = j;
+        }
+        assertEquals(juego, juegoEnListaCompra);
+        assertEquals(edicion, venta.getArticulosVenta().getLast().get(juego));
     }
 
 }

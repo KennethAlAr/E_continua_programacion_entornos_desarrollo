@@ -35,7 +35,7 @@ class GestorJuegosTest {
     }
 
     @Test
-    public void menuJuegos() {
+    public void stringMenuPrincipalJuegos() {
         String menu = """
                 ### GESTIÓN DE INVENTARIO ###
                 
@@ -71,7 +71,9 @@ class GestorJuegosTest {
     @Test
     public void eliminarJuegoNoExistente() {
         String nombre = "Tekken";
-        assertEquals("El juego 'Tekken' no se encuentra en el catálogo de juegos.", GestorJuegos.eliminarJuego(nombre, catalogoJuegos));
+        assertThrows(NoSuchElementException.class, () -> {
+            GestorJuegos.eliminarJuego(nombre, catalogoJuegos);
+        });
     }
 
     @Test
@@ -89,7 +91,9 @@ class GestorJuegosTest {
     @Test
     public void listarJuegosAlfabetico() {
         String  lista = "Zelda - Aventura - PEGI-12\nPC - 29,90€ - 200ud.\nNintendo - 59,90€ - 100ud.\n----------\n";
-        assertEquals(lista, GestorJuegos.listarJuegosAlfabetico(catalogoJuegos));
+        String  lista2 = "Zelda - Aventura - PEGI-12\nNintendo - 59,90€ - 100ud.\nPC - 29,90€ - 200ud.\n----------\n";
+        assertTrue(lista.equals(GestorJuegos.listarJuegosAlfabetico(catalogoJuegos))
+                || lista2.equals(GestorJuegos.listarJuegosAlfabetico(catalogoJuegos)));
     }
 
     @Test

@@ -54,4 +54,10 @@ class EdicionJuegoTest {
         assertEquals(9 ,edicionJuego.getStock());
     }
 
+    @Test
+    public void aumentarStock() {
+        edicionJuego.aumentarStock();
+        assertEquals(11, edicionJuego.getStock());
+    }
+
 }

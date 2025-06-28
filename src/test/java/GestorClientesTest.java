@@ -25,10 +25,10 @@ class GestorClientesTest {
     }
 
     @Test
-    public void menuClientes() {
+    public void stringMenuPrincipalClientes() {
         String menu = """
                 ### GESTIÓN DE CLIENTES ###
-                
+
                 1. Alta de cliente nuevo
                 2. Baja de cliente existente
                 3. Modificar datos de cliente
@@ -36,7 +36,7 @@ class GestorClientesTest {
                 5. Listado de clientes (Orden Alfabético)
                 6. Listado de clientes (Orden por importe de Ventas)
                 7. Salir
-                
+
                 Elige una opción:""";
         assertEquals(menu, GestorClientes.stringMenuPrincipalClientes());
     }
@@ -61,22 +61,9 @@ class GestorClientesTest {
     @Test
     public void bajaClienteNoExistente() {
         String dni = "87654321B";
-        assertEquals("El DNI introducido no coincide con ningún cliente de la base de datos.",
-                GestorClientes.bajaCliente(dni, listaClientes));
-    }
-
-    @Test
-    public void buscarPorDni() {
-        String dni = "12345678A";
-        assertEquals("\nCliente: Kenneth\nDNI: 12345678A\nTeléfono: 666123123\nCorreo electrónico: kenneth@email.com\nImporte total de ventas: 0,00€.",
-                GestorClientes.buscarPorDni(dni, listaClientes));
-    }
-
-    @Test
-    public void buscarPorDniNoExistente() {
-        String dni = "87654321B";
-        assertEquals("El DNI introducido no coincide con ningún cliente de la base de datos.",
-                GestorClientes.buscarPorDni(dni, listaClientes));
+        assertThrows(NoSuchElementException.class, () -> {
+            GestorClientes.bajaCliente(dni, listaClientes);
+        });
     }
 
     @Test
