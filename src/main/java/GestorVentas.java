@@ -7,6 +7,11 @@ import java.util.InputMismatchException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Representa el menú de gestión de las ventas y su historial.
+ * @author Kenneth Alonso
+ * @version 1.0
+ */
 public class GestorVentas {
 
     /**

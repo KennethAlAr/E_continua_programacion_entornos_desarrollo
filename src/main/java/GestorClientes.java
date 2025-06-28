@@ -5,6 +5,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.NoSuchElementException;
 
+/**
+ * Representa el menú de gestión de los clientes y su base de datos.
+ * @author Kenneth Alonso
+ * @version 1.0
+ */
 public class GestorClientes {
 
     /**

@@ -4,7 +4,13 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Representa el menú principal de la aplicación.
+ * @author Kenneth Alonso
+ * @version 1.0
+ */
 public class GestorTiendaJuegos {
+
     /**
      * Función principal de la aplicación.
      */

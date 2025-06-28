@@ -1,4 +1,9 @@
 
+/**
+ * Representa un cliente de la base de datos de clientes.
+ * @author Kenneth Alonso
+ * @version 1.0
+ */
 public class Cliente {
 
     private String nombre;
@@ -8,6 +13,13 @@ public class Cliente {
     private double importeVentas;
 
     //Constructor
+    /**
+     * Constructor de la clase Cliente.
+     * @param nombre Nombre del Cliente.
+     * @param dni DNI del Cliente.
+     * @param telefono Teléfono del Cliente.
+     * @param email Correo electrónico del Cliente.
+     */
     public Cliente(String nombre, String dni, String telefono, String email) {
         this.nombre = nombre;
         this.dni = dni;
@@ -17,10 +29,34 @@ public class Cliente {
     }
 
     //Getters
+    /**
+     * Devuelve el nombre del Cliente.
+     * @return Nombre del Cliente.
+     */
     public String getNombre() {return this.nombre;}
+
+    /**
+     * Devuelve el DNI del Cliente.
+     * @return DNI del Cliente.
+     */
     public String getDni() {return this.dni;}
+
+    /**
+     * Devuelve el nombre del Cliente.
+     * @return Nombre del Cliente.
+     */
     public String getTelefono() {return this.telefono;}
+
+    /**
+     * Devuelve el correo electrónico del Cliente.
+     * @return Correo electrónico del Cliente.
+     */
     public String getEmail() {return email;}
+
+    /**
+     * Devuelve el importe total de las ventas realizadas al Cliente.
+     * @return Importe total de las ventas realizadas al Cliente.
+     */
     public double getImporteVentas() {return this.importeVentas;}
 
     //Setters

@@ -6,6 +6,11 @@ import java.util.InputMismatchException;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
+/**
+ * Representa el menú de gestión de los juegos y su catálogo.
+ * @author Kenneth Alonso
+ * @version 1.0
+ */
 public class GestorJuegos {
 
     /**

@@ -2,6 +2,11 @@
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+/**
+ * Representa un juego del catálogo de juegos.
+ * @author Kenneth Alonso
+ * @version 1.0
+ */
 public class Juego {
 
     private String nombre;
@@ -10,6 +15,12 @@ public class Juego {
     private ArrayList<EdicionJuego> listaEdicionJuego;
 
     //Constructor
+    /**
+     * Constructor de la clase Juego.
+     * @param nombre Nombre del juego.
+     * @param genero Género del juego.
+     * @param pegi Calificación PEGI del juego.
+     */
     public Juego (String nombre, String genero, String pegi) {
         this.nombre = nombre;
         this.genero = genero;
@@ -18,10 +29,35 @@ public class Juego {
     }
 
     //Getters
+
+    /**
+     * Devuelve el nombre del juego.
+     * @return Nombre del juego.
+     */
     public String getNombre() {return this.nombre;}
+
+    /**
+     * Devuelve el género del juego.
+     * @return Género del juego.
+     */
     public String getGenero() {return this.genero;}
+
+    /**
+     * Devuelve la calificación PEGI del juego.
+     * @return Calificación PEGI del juego.
+     */
     public String getPegi() {return this.pegi;}
+
+    /**
+     * Devuelve una lista con las ediciones del juego.
+     * @return Lista con ediciones del juego.
+     */
     public ArrayList<EdicionJuego> getEdicionJuego() {return this.listaEdicionJuego;}
+
+    /**
+     * Devuelve el número de sistemas disponibles para el juego.
+     * @return Número de sistemas disponibles.
+     */
     public int getNumeroSistemas() {return listaEdicionJuego.size();}
 
     /**
@@ -97,8 +133,35 @@ public class Juego {
         return (stock != 0);
     }
 
-    //Setters
+    /**
+     * Método para seleccionar una edición de juego según el nombre del sistema.
+     * @param consola nombre del sistema que se quiere seleccionar.
+     * @return EdicionJuego seleccionada según el nombre del sistema.
+     */
+    public EdicionJuego seleccionarEdicion(String consola) {
+        for (EdicionJuego edicion : listaEdicionJuego) {
+            if (edicion.getConsola().equals(consola)) {
+                return edicion;
+            }
+        }
+        throw new NoSuchElementException("No existe el juego para ese sistema en la base de datos.");
+    }
 
+    /**
+     * Método para saber si la lista de ediciones de juego contiene la consola solicitada.
+     * @param consola Nombre de la consola solicitada
+     * @return True en caso de existir y false en caso de no existir.
+     */
+    public boolean existeConsola(String consola) {
+        for (EdicionJuego edicion : listaEdicionJuego) {
+            if (edicion.getConsola().equals(consola)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Setters
     /**
      * Método para añadir una edición de sistema a un juego.
      * @param edicion EdicionJuego que se quiere añadir al juego.
@@ -144,34 +207,6 @@ public class Juego {
     public String modificarPegi(String pegi) {
         this.pegi = pegi;
         return "Calificación PEGI modificada a '" + pegi + "'.";
-    }
-
-    /**
-     * Método para seleccionar una edición de juego según el nombre del sistema.
-     * @param consola nombre del sistema que se quiere seleccionar.
-     * @return EdicionJuego seleccionada según el nombre del sistema.
-     */
-    public EdicionJuego seleccionarEdicion(String consola) {
-        for (EdicionJuego edicion : listaEdicionJuego) {
-            if (edicion.getConsola().equals(consola)) {
-                return edicion;
-            }
-        }
-        throw new NoSuchElementException("No existe el juego para ese sistema en la base de datos.");
-    }
-
-    /**
-     * Método para saber si la lista de ediciones de juego contiene la consola solicitada.
-     * @param consola Nombre de la consola solicitada
-     * @return True en caso de existir y false en caso de no existir.
-     */
-    public boolean existeConsola(String consola) {
-        for (EdicionJuego edicion : listaEdicionJuego) {
-            if (edicion.getConsola().equals(consola)) {
-                return true;
-            }
-        }
-        return false;
     }
 
 }
